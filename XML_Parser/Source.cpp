@@ -5,8 +5,8 @@ using namespace std;
 
 int main()
 {
-	Node n1;
-	n1.print();
+	Node root("Root 1");
+	root.testFunction();
 
 	return 0;
 }
