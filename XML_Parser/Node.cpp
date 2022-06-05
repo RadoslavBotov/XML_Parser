@@ -16,7 +16,17 @@ Node::Node(std::string keyParam, const Node* parentParam)
 	key = keyParam;
 	parent = parentParam;
 
-	(parent == nullptr) ? id = "root_id" : id = parent->id + "_" + std::to_string(idParam++);
+	if (parent == nullptr)
+		id = "root_id";
+	else
+	{
+		std::string temp = std::to_string(idParam++);
+		if (parent->id == "root_id")
+			id = temp;
+		else
+			id = parent->id + "_" + temp;
+	}
+	
 	(parent == nullptr) ? depth = 0 : depth = parent->depth + 1;
 }
 
@@ -86,6 +96,7 @@ void Node::testFunction()
 	addNode("node 1");
 	addNode("node 2");
 	children[0]->addNode("node 1_1");
+	children[0]->addNode("node 1_2");
 
 	print();
 }
