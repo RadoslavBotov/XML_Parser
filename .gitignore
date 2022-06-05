@@ -3,6 +3,11 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Manually added files
+XML_Parser.sln
+XML_Parser.vcxproj
+XML_Parser.vcxproj.filters
+
 # User-specific files
 *.rsuser
 *.suo
