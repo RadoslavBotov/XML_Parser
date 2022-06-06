@@ -1,12 +1,13 @@
 #pragma once
 #include<string>
 #include<vector>
+#include"Element.h"
 
 class Node
 {
 public:
-	Node();
-	Node(std::string keyParam, const Node* parentParam = nullptr);
+	//Node();
+	Node(std::string keyParam, const Node* parentParam);
 	Node(const Node& source);
 	Node& operator = (const Node& source);
 	~Node();
@@ -14,13 +15,14 @@ public:
 	void addNode(std::string keyParam);
 
 	void print() const;
-	void testFunction();
 
 private:
 	std::string id;
 	std::string key;
-	const Node* parent;
 	std::vector <Node*> children;
+	std::vector <Element*> elements;
+
+	const Node* parent;
 	unsigned depth;
 
 	void printIndent() const;

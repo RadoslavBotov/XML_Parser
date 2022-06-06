@@ -1,13 +1,13 @@
 #include "Node.h"
 #include<iostream>
 
-Node::Node()
-{
-	id = "root_id";
-	key = "root_key";
-	parent = nullptr;
-	depth = 0;
-}
+//Node::Node()
+//{
+//	id = "root_id";
+//	key = "root_key";
+//	parent = nullptr;
+//	depth = 0;
+//}
 
 Node::Node(std::string keyParam, const Node* parentParam)
 {
@@ -90,17 +90,6 @@ void Node::print() const
 		child->print();
 }
 
-void Node::testFunction()
-{
-	// treat as if main
-	addNode("node 1");
-	addNode("node 2");
-	children[0]->addNode("node 1_1");
-	children[0]->addNode("node 1_2");
-
-	print();
-}
-
 void Node::freeMemory()
 {
 	id = "0";
@@ -109,6 +98,9 @@ void Node::freeMemory()
 
 	for (Node* child : children)
 		delete child;
+
+	for (Element* el : elements)
+		delete el;
 }
 
 void Node::printIndent() const
