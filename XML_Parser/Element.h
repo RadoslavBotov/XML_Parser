@@ -5,7 +5,10 @@
 class Element
 {
 public:
-	Element();
+	Element(std::string nameParam, std::string contentsParam);
+
+	std::string& accessName();
+	std::string& accessContents();
 
 private:
 	std::string name;
