@@ -31,8 +31,8 @@ void XMLTree::testFunction()
 	// treat as if main
 	root->addNode("node 1");
 	root->addNode("node 2");
-	root->children[0]->addNode("node 1_1");
-	root->children[0]->addNode("node 1_2");
+	root->getChild(0)->addNode("node 1_1");
+	root->getChild(0)->addNode("node 1_2");
 
 	root->print();
 }

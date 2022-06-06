@@ -67,6 +67,36 @@ Node::~Node()
 	freeMemory();
 }
 
+std::string& Node::getId()
+{
+	return id;
+}
+
+std::string& Node::getKey()
+{
+	return key;
+}
+
+Node* Node::getChild(const size_t index) const
+{
+	return children[index];
+}
+
+Element* Node::getElement(const size_t index) const
+{
+	return elements[index];
+}
+
+const Node* Node::getParent() const
+{
+	return parent;
+}
+
+unsigned Node::getDepth() const
+{
+	return depth;
+}
+
 void Node::addNode(std::string keyParam)
 {
 	Node* newNode = new Node(keyParam, this);

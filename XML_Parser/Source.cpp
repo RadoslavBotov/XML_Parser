@@ -1,12 +1,13 @@
 #include<iostream>
 #include<fstream>
 #include"Node.h"
+#include"XMLTree.h"
 using namespace std;
 
 int main()
 {
-	Node root("Root 1");
-	root.testFunction();
+	XMLTree tree;
+	tree.testFunction();
 
 	return 0;
 }
