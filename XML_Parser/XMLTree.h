@@ -1,4 +1,7 @@
 #pragma once
+#include<iostream>
+#include<string>
+#include<vector>
 #include"Node.h"
 
 class XMLTree
@@ -11,6 +14,13 @@ public:
 
 	void testFunction();
 
+	// Open
+	// Close
+	// Save
+	// Save As
+	
+
 private:
 	Node* root;
+	std::string fileName;
 };

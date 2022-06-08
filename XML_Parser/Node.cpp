@@ -11,37 +11,29 @@
 
 Node::Node(std::string keyParam, const Node* parentParam)
 {
-	static unsigned idParam = 1;
-
 	key = keyParam;
 	parent = parentParam;
 
-	if (parent == nullptr)
-		id = "root_id";
-	else
-	{
-		std::string temp = std::to_string(idParam++);
-		if (parent->id == "root_id")
-			id = temp;
-		else
-			id = parent->id + "_" + temp; 
-	}
-	
+	(parent == nullptr) ? id = "root_id" : id = parent->id + "_";
 	(parent == nullptr) ? depth = 0 : depth = parent->depth + 1;
+
+	// we don't set capacity for children and elements
+	// as they are vectors and auto resize
 }
 
 Node::Node(const Node& source)
 {
-	static unsigned idParam = 1;
-
 	key = source.key;
 	parent = source.parent;
 
-	id = source.id + "_" + std::to_string(idParam++);
-	depth = source.depth;
+	(parent == nullptr) ? id = "root_id" : id = parent->id + "_";
+	(parent == nullptr) ? depth = 0 : depth = parent->depth + 1;
 	
 	for (Node* child : source.children)
 		children.push_back(new Node(*child));
+
+	for (Element* el : source.elements)
+		elements.push_back(new Element(*el));
 }
 
 Node& Node::operator = (const Node& source)
@@ -53,11 +45,14 @@ Node& Node::operator = (const Node& source)
 		key = source.key;
 		parent = source.parent;
 
-		id = source.id;
-		depth = source.depth;
+		(parent == nullptr) ? id = "root_id" : id = parent->id + "_";
+		(parent == nullptr) ? depth = 0 : depth = parent->depth + 1;
 
 		for (Node* child : source.children)
 			children.push_back(new Node(*child));
+
+		for (Element* el : source.elements)
+			elements.push_back(new Element(*el));
 	}
 	return *this;
 }
@@ -70,6 +65,19 @@ Node::~Node()
 void Node::addNode(std::string keyParam)
 {
 	Node* newNode = new Node(keyParam, this);
+	newNode->depth = newNode->parent->depth + 1;
+
+	children.push_back(newNode);
+}
+
+void Node::addNode(const Node& source)
+{
+	Node* newNode = new Node(source);
+	newNode->parent = this;
+
+	newNode->id = parent->id + "_";
+	newNode->depth = newNode->parent->depth + 1;
+
 	children.push_back(newNode);
 }
 
@@ -98,9 +106,11 @@ void Node::freeMemory()
 
 	for (Node* child : children)
 		delete child;
+	children.clear();
 
 	for (Element* el : elements)
 		delete el;
+	elements.clear();
 }
 
 void Node::printIndent() const

@@ -7,12 +7,25 @@ struct Node
 {
 public:
 	//Node();
+	/// Constructor with parameters.
+	///
+	/// Parameters for key value and parent node pointer.
 	Node(std::string keyParam, const Node* parentParam);
+	/// Copy constructor.
+	/// 
+	/// .
 	Node(const Node& source);
+	/// Operator =.
+	/// 
+	/// .
 	Node& operator = (const Node& source);
+	/// Destructor.
+	///
+	/// Uses freeMemory() to clear.
 	~Node();
 
 	void addNode(std::string keyParam);
+	void addNode(const Node& source);
 
 	void print() const;
 
@@ -25,7 +38,7 @@ public:
 	const Node* parent;
 	unsigned depth;
 
-private:
+private: // internal functions
 	void printIndent() const;
 	void freeMemory();
 };
