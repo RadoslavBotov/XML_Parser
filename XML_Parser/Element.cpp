@@ -6,12 +6,12 @@ Element::Element(std::string nameParam, std::string contentsParam)
 	contents = contentsParam;
 }
 
-std::string& Element::getName()
+std::string& Element::accessName()
 {
 	return name;
 }
 
-std::string& Element::getContents()
+std::string& Element::accessContents()
 {
 	return contents;
 }

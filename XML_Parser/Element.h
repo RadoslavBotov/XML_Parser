@@ -2,7 +2,7 @@
 #include<string>
 #include<vector>
 
-class Element
+struct Element
 {
 public:
 	Element(std::string nameParam, std::string contentsParam);
@@ -10,7 +10,7 @@ public:
 	std::string& accessName();
 	std::string& accessContents();
 
-private:
+// variables / fields
 	std::string name;
 	std::string contents;
 };

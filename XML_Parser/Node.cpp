@@ -24,7 +24,7 @@ Node::Node(std::string keyParam, const Node* parentParam)
 		if (parent->id == "root_id")
 			id = temp;
 		else
-			id = parent->id + "_" + temp;
+			id = parent->id + "_" + temp; 
 	}
 	
 	(parent == nullptr) ? depth = 0 : depth = parent->depth + 1;
@@ -65,36 +65,6 @@ Node& Node::operator = (const Node& source)
 Node::~Node()
 {
 	freeMemory();
-}
-
-const Node* Node::getParent() const
-{
-	return parent;
-}
-
-unsigned Node::getDepth() const
-{
-	return depth;
-}
-
-std::string& Node::accessId()
-{
-	return id;
-}
-
-std::string& Node::accessKey()
-{
-	return key;
-}
-
-Node* Node::accessChild(const size_t index) const
-{
-	return children[index];
-}
-
-Element* Node::accessElement(const size_t index) const
-{
-	return elements[index];
 }
 
 void Node::addNode(std::string keyParam)
