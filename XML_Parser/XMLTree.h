@@ -12,7 +12,7 @@ public:
 	XMLTree& operator = (const XMLTree& source);
 	~XMLTree();
 
-	void testFunction();
+	void runProgram();
 
 	// Open
 	// Close
@@ -22,5 +22,8 @@ public:
 
 private:
 	Node* root;
-	std::string fileName;
+	static const char commandLines[6][7];
+
+	short getIndexOfCommand(const char userInput[128]);
+	void printHelp() const;
 };
