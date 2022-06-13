@@ -33,13 +33,14 @@ void XMLTree::runProgram()
 {
 	bool runProgram = true;		// tells us if we have to run dialog or not
 	bool fileOpen = false;		// we simulate a file; save, save-as, close, open all have an ofstream internally
-	std::string fileName;		// we remember the name of the file we open so we can work with it correctly
+	std::string fileName = "testFile.xml";		// name of the file when user uses open
+	std::string newFileName;	// name of the file when user uses saveas as to not lose the original name of file
 	char userInput[128];		// the input we get from user
 
-	root->addNode("node 1");
-	root->addNode("node 2");
-	root->children[0]->addNode("node 1_1");
-	root->children[1]->addNode("node 1_2");
+	//root->addNode("node 1");
+	//root->addNode("node 2");
+	//root->children[0]->addNode("node 1_1");
+	//root->children[1]->addNode("node 1_2");
 
 	printHelp();				// prints instructions to console in the beginning of dialog
 
@@ -55,49 +56,51 @@ void XMLTree::runProgram()
 			// ... code
 		}
 
-		switch (getIndexOfCommand(userInput))		// get the command index the user inputs
+		switch (getIndexOfCommand(userInput))	// get the command index the user inputs
 		{
-		case 0:						// open <file> is index 0
-			fileOpen = true;
+		case 0:	// open <file> is index 0
+			fileOpen = open(fileName);	// if file is successfully opened -> fileOpen will be true, otherwise it will be false
+			if(fileOpen)				// as such we can use it here instead of creating another boolean or calling open again
+				std::cout << "Successfully opened " + fileName << std::endl;
 			// ... function that reads from file and save information as a tree with root the field 'root'
 			break;
 
-		case 1:						// close is index 1
+		case 1:	// close is index 1
 			if (fileOpen)
 			{
 				fileOpen = false;
-				std::cout << "Successfully closed " + fileName + ".xml" << std::endl;
+				std::cout << "Successfully closed " + fileName << std::endl;
 			}
 			else
 				std::cout << "> No file is opend." << std::endl;
 			break;
 
-		case 2:						// save is index 2
+		case 2:	// save is index 2
 			if (fileOpen)
 			{
-				save(fileName);		// we pass the fileName we got from the open command
-				std::cout<< "> Successfully saved " + fileName + ".xml" << std::endl;
+				if (save(fileName))		// we pass the fileName we got from the open command
+					std::cout << "> Successfully saved " + fileName << std::endl;
 			}
 			else
 				std::cout << "No file opened." << std::endl;	// if we don't have an 'open' file inform user
 			break;
 
-		case 3:			// saveas <file> is index 3
+		case 3:	// saveas <file> is index 3
 			if (fileOpen)
 			{
 				// get new file name
-				save(fileName);		// we use save again but we pass the new file name as parameter so we create a new file
-				std::cout << "> Successfully saved another " + fileName + ".xml" << std::endl;
+				if (save(newFileName)) // we use save again but we pass the new file name as parameter so we create a new file
+					std::cout << "> Successfully saved another " + newFileName << std::endl;
 			}
 			else
 				std::cout << "No file opened." << std::endl;	// if we don't have an 'open' file inform user
 			break;
 
-		case 4:				// help is index 4
+		case 4:	// help is index 4
 			printHelp();	// prints all valid commands user can input
 			break;
 
-		case 5:			// exit is index 5
+		case 5:	// exit is index 5
 			if (fileOpen) // check if we have an open file
 			{
 				std::cout << "> You have an open file with unsaved changes, please select 'close' or 'save' first." << std::endl;
@@ -150,9 +153,37 @@ void XMLTree::printHelp() const
 	std::cout << "exit ------------- exists the program\n\n";
 }
 
-void XMLTree::save(std::string fileNameParam) const
+bool XMLTree::save(std::string fileNameParam) const
 {
+	//std::ofstream out("C:\\Solutions\\XML_Parser\\tempFile.xml");
 	std::ofstream out(fileNameParam);
-	out << root;
+
+	if (!out)
+	{
+		std::cout << "> Error saving file to " + fileNameParam + ".xml" << std::endl;
+		std::cout << "> File not saved successfully." << std::endl;
+		return false;	// return true as to NOT write in runProgram that the file was saved successfully
+	}
+
+	out << *root;	// write tree correctly formated in file
 	out.close();
+
+	return true;	// return true as to write in runProgram that the file was saved successfully
+}
+
+bool XMLTree::open(std::string fileNameParam)
+{
+	std::ifstream in(fileNameParam);
+
+	if (!in)	// if there was some error when opening file
+	{
+		std::cout << "> Error reading from file " + fileNameParam + ".xml" << std::endl;	// inform user
+		std::cout << "> File not read successfully." << std::endl;
+		return false;		// return false as to NOT write in runProgram that the file was opened successfully
+	}
+
+	//in >> root;		// read file and save as a tree in the root field
+	in.close();
+
+	return true;	// return true as to write in runProgram that the file was opened successfully
 }

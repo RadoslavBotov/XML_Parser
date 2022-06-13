@@ -1,0 +1,14 @@
+<people id="root_id">
+  <person id="0">
+    <name>John Smith</name>
+    <address>USA</address>
+  </person>
+  <person id="0_1">
+    <name>Ivan Petrov</name>
+    <address>Bulgaria</address>
+  </person>
+  <person id="0_2">
+    <name>Ivan Petrov</name>
+    <address>Bulgaria</address>
+  </person>
+</people>
