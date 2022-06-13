@@ -27,7 +27,9 @@ public:
 	void addNode(std::string keyParam);
 	void addNode(const Node& source);
 
-	void print() const;
+	void print(std::ostream& os) const;
+
+	friend std::ostream& operator << (std::ostream& os, const Node& source);
 
 // variables / fields
 	std::string id;

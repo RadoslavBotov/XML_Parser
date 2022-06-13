@@ -16,7 +16,6 @@ public:
 
 	// Open
 	// Close
-	// Save
 	// Save As
 	
 
@@ -26,4 +25,5 @@ private:
 
 	short getIndexOfCommand(const char userInput[128]);
 	void printHelp() const;
+	void save(std::string fileNameParam) const;
 };

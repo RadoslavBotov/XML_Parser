@@ -81,21 +81,21 @@ void Node::addNode(const Node& source)
 	children.push_back(newNode);
 }
 
-void Node::print() const
+void Node::print(std::ostream& os) const
 {
 	printIndent();
-	std::cout << "Key: " << key << " id=" << id << std::endl;
+	os << "Key: " << key << " id=" << id << std::endl;
 
 	printIndent();
-	std::cout << "Parent: ";
-	(parent != nullptr) ? std::cout << parent->key : std::cout << "nullptr";
-	std::cout << std::endl;
+	os << "Parent: ";
+	(parent != nullptr) ? os << parent->key : os << "nullptr";
+	os << std::endl;
 
 	printIndent();
-	std::cout << "Depth: " << depth << std::endl;
+	os << "Depth: " << depth << std::endl;
 
 	for (Node* child : children)
-		child->print();
+		child->print(os);
 }
 
 void Node::freeMemory()
@@ -117,4 +117,10 @@ void Node::printIndent() const
 {
 	for (size_t i = 0; i < depth; i++)
 		std::cout << "    ";
+}
+
+std::ostream& operator << (std::ostream& os, const Node& source)
+{
+	source.print(os);
+	return os;
 }
