@@ -1,11 +1,14 @@
 <people>
   <person>
     <name>Ivan Burochovski</name>
+    <address>Russia</address>
   </person>
   <person>
-    <name>Petur Georgiev</name>
+    <name>Alex Johns</name>
+    <address>USA</address>
   </person>
   <person>
     <name>Radoslav Botov</name>
+    <address>Bulgaria</address>
   </person>
 </people>
