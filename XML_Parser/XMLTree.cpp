@@ -61,47 +61,13 @@ void XMLTree::runProgram()
 
 		if (strlen(userInput) > 6) // if length of command bigger than 6, there may be a name of file after command
 		{
-			char tempBuffer[128]; // store command and a buffer for the file name as strncpy_s doesn't work with string
+			bool flag; // set to false if userInput passed to the first getFileName is for command 'open'
+					   // otherwise it gets set to true and we check if it's 'saveas' command
 
-			strncpy_s(tempBuffer, userInput, 5);  // we get first five symbols of user input
-			if (strcmp(tempBuffer, "open ") == 0) // we only need to see if they are the 'open' command
-			{
-				indexOfCommand = 0;
-				strncpy_s(tempBuffer, userInput + 5, strlen(userInput) - 4); // get the file name after open
-				fileName = tempBuffer;
-
-				// as we no longer need tempBuffer we can change it
-				if (strlen(tempBuffer) > 4)	// check if tempBuffer is bigger than 4 symbols so we can safely use strncpy below
-				{
-					strncpy_s(tempBuffer, tempBuffer + strlen(tempBuffer) - 4, 4);
-					if (strcmp(tempBuffer, ".xml") != 0) // check if fileName has '.xml' at the end
-						fileName += ".xml";				 // if not add it at the end
-				}
-				else						// if tempBuffer has less than 4 symbols we can safely say it doesn't
-					fileName += ".xml";		// contain '.xml' and we add it at the end
-			}
-			else
-			{
-				strncpy_s(tempBuffer, userInput, 7);    // we get first seven symbols of user input
-				if (strcmp(tempBuffer, "saveas ") == 0) // we only need to see if they are the 'saveas' command
-				{
-					indexOfCommand = 3;
-					strncpy_s(tempBuffer, userInput + 7, strlen(userInput) - 6); // get the file name after saveas
-				}
-				newFileName = tempBuffer;
-
-				// as we no longer need tempBuffer we can change it
-				if (strlen(tempBuffer) > 4)	// check if tempBuffer is bigger than 4 symbols so we can safely use strncpy below
-				{
-					strncpy_s(tempBuffer, tempBuffer + strlen(tempBuffer) - 4, 4);
-					if (strcmp(tempBuffer, ".xml") != 0) // check if fileName has '.xml' at the end
-						newFileName += ".xml";				 // if not add it at the end
-				}
-				else						// if tempBuffer has less than 4 symbols we can safely say it doesn't
-					newFileName += ".xml";		// contain '.xml' and we add it at the end
-			}
+			flag = getFileName(fileName, userInput, "open ", 4, indexOfCommand);   // if command is 'open ', get file name or path
+			if (flag)
+				getFileName(newFileName, userInput, "saveas ", 6, indexOfCommand); // if command is 'saveas ', get file name or path
 		}
-
 		
 		switch (indexOfCommand)	// get the command index the user inputs
 		{
@@ -192,6 +158,36 @@ short XMLTree::getIndexOfCommand(const char command[7])
 	return -1;
 }
 
+bool XMLTree::getFileName(std::string& fileNameParam, const char* userInput, const char* command, short commandSize, short& indexParam) const
+{
+	char tempBuffer[128]; // store command and a buffer for the file name as strncpy_s doesn't work with string
+	
+	if (strcmp(command, "open ") == 0)
+		indexParam = 0;
+	if (strcmp(command, "saveas ") == 0)
+		indexParam = 3;
+
+	strncpy_s(tempBuffer, userInput, commandSize + 1); // we get first commandSize symbols of user input
+	if (strcmp(tempBuffer, command) == 0) // we only need to see if they are the 'open' command
+	{
+		strncpy_s(tempBuffer, userInput + commandSize + 1, strlen(userInput) - commandSize); // get the file name after open
+		fileNameParam = tempBuffer;
+									// as we no longer need tempBuffer we can change it
+		if (strlen(tempBuffer) > 4)	// check if tempBuffer is bigger than 4 symbols so we can safely use strncpy below
+		{
+			strncpy_s(tempBuffer, tempBuffer + strlen(tempBuffer) - 4, 4);
+			if (strcmp(tempBuffer, ".xml") != 0) // check if fileName has '.xml' at the end
+				fileNameParam += ".xml";				 // if not add it at the end
+		}
+		else						// if tempBuffer has less than 4 symbols we can safely say it doesn't
+			fileNameParam += ".xml";		// contain '.xml' and we add it at the end
+		
+		return false; // userInput is for command so we don't want to enter getFileName() again in runProgram
+	}
+
+	return true; // userInput wasn't for command so we want to enter getFileName() again and check for 'saveas' command
+}
+
 void XMLTree::printHelp() const
 {
 	std::cout << "The following commands are supported:\n";
@@ -203,9 +199,8 @@ void XMLTree::printHelp() const
 	std::cout << "exit ------------- exists the program\n\n";
 }
 
-bool XMLTree::save(std::string fileNameParam) const
+bool XMLTree::save(const std::string fileNameParam) const
 {
-	//std::ofstream out("C:\\Solutions\\XML_Parser\\tempFile.xml");
 	std::ofstream out(fileNameParam);
 
 	if (!out)
@@ -221,7 +216,7 @@ bool XMLTree::save(std::string fileNameParam) const
 	return true;	// return true as to write in runProgram that the file was saved successfully
 }
 
-bool XMLTree::open(std::string fileNameParam)
+bool XMLTree::open(const std::string fileNameParam)
 {
 	std::ifstream in(fileNameParam);
 
@@ -236,8 +231,8 @@ bool XMLTree::open(std::string fileNameParam)
 			return false; // return false as to NOT write in runProgram that the file was opened successfully
 		}
 
-		std::cout << "> Error opening" + fileNameParam << std::endl;
-		std::cout << "> File not read successfully" << std::endl;
+		std::cout << "> Error opening " + fileNameParam << std::endl;
+		std::cout << "> File not read successfully" << std::endl << std::endl;
 		return false; // return false as to NOT write in runProgram that the file was opened successfully
 	}
 
