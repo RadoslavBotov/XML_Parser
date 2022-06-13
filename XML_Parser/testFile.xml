@@ -1,3 +1,11 @@
-Key: root id=root_id
-Parent: nullptr
-Depth: 0
+<people>
+  <person>
+    <name>Ivan Burochovski</name>
+  </person>
+  <person>
+    <name>Petur Georgiev</name>
+  </person>
+  <person>
+    <name>Radoslav Botov</name>
+  </person>
+</people>

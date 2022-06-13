@@ -37,10 +37,13 @@ void XMLTree::runProgram()
 	std::string newFileName;	// name of the file when user uses saveas as to not lose the original name of file
 	char userInput[128];		// the input we get from user
 
-	//root->addNode("node 1");
-	//root->addNode("node 2");
-	//root->children[0]->addNode("node 1_1");
-	//root->children[1]->addNode("node 1_2");
+	root->key = "people";
+	root->addNode("person");
+	root->addNode("person");
+	root->addNode("person");
+	root->children[0]->addElement("name", "Ivan Burochovski");
+	root->children[1]->addElement("name", "Petur Georgiev");
+	root->children[2]->addElement("name", "Radoslav Botov");
 
 	printHelp();				// prints instructions to console in the beginning of dialog
 
@@ -61,7 +64,7 @@ void XMLTree::runProgram()
 		case 0:	// open <file> is index 0
 			fileOpen = open(fileName);	// if file is successfully opened -> fileOpen will be true, otherwise it will be false
 			if(fileOpen)				// as such we can use it here instead of creating another boolean or calling open again
-				std::cout << "Successfully opened " + fileName << std::endl;
+				std::cout << "Successfully opened " + fileName << std::endl << std::endl;
 			// ... function that reads from file and save information as a tree with root the field 'root'
 			break;
 
@@ -69,20 +72,20 @@ void XMLTree::runProgram()
 			if (fileOpen)
 			{
 				fileOpen = false;
-				std::cout << "Successfully closed " + fileName << std::endl;
+				std::cout << "Successfully closed " + fileName << std::endl << std::endl;
 			}
 			else
-				std::cout << "> No file is opend." << std::endl;
+				std::cout << "> No file is opend." << std::endl << std::endl;
 			break;
 
 		case 2:	// save is index 2
 			if (fileOpen)
 			{
 				if (save(fileName))		// we pass the fileName we got from the open command
-					std::cout << "> Successfully saved " + fileName << std::endl;
+					std::cout << "> Successfully saved " + fileName << std::endl << std::endl;
 			}
 			else
-				std::cout << "No file opened." << std::endl;	// if we don't have an 'open' file inform user
+				std::cout << "No file opened." << std::endl << std::endl;	// if we don't have an 'open' file inform user
 			break;
 
 		case 3:	// saveas <file> is index 3
@@ -90,10 +93,10 @@ void XMLTree::runProgram()
 			{
 				// get new file name
 				if (save(newFileName)) // we use save again but we pass the new file name as parameter so we create a new file
-					std::cout << "> Successfully saved another " + newFileName << std::endl;
+					std::cout << "> Successfully saved another " + newFileName << std::endl << std::endl;
 			}
 			else
-				std::cout << "No file opened." << std::endl;	// if we don't have an 'open' file inform user
+				std::cout << "No file opened." << std::endl << std::endl;	// if we don't have an 'open' file inform user
 			break;
 
 		case 4:	// help is index 4
@@ -103,7 +106,7 @@ void XMLTree::runProgram()
 		case 5:	// exit is index 5
 			if (fileOpen) // check if we have an open file
 			{
-				std::cout << "> You have an open file with unsaved changes, please select 'close' or 'save' first." << std::endl;
+				std::cout << "> You have an open file with unsaved changes, please select 'close' or 'save' first." << std::endl << std::endl;
 				while (true)
 				{
 					std::cout << "& ";	// user inputs save or saveas
@@ -127,7 +130,7 @@ void XMLTree::runProgram()
 			break;
 
 		default: //  if getIndexOfCommand(userInput) has returned -1 -> invalid command
-			std::cout << "> Invalid command." << std::endl;
+			std::cout << "> Invalid command." << std::endl << std::endl;
 			break;
 		}
 	}

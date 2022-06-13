@@ -26,6 +26,7 @@ public:
 
 	void addNode(std::string keyParam);
 	void addNode(const Node& source);
+	void addElement(const std::string name, const std::string contents);
 
 	void print(std::ostream& os) const;
 
@@ -41,6 +42,6 @@ public:
 	unsigned depth;
 
 private: // internal functions
-	void printIndent() const;
+	void printIndent(std::ostream& os, short offSet = 0) const;
 	void freeMemory();
 };

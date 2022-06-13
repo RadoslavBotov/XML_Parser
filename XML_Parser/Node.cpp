@@ -81,21 +81,23 @@ void Node::addNode(const Node& source)
 	children.push_back(newNode);
 }
 
+void Node::addElement(const std::string name, const std::string contents)
+{
+	elements.push_back(new Element(name, contents));
+}
+
 void Node::print(std::ostream& os) const
 {
-	printIndent();
-	os << "Key: " << key << " id=" << id << std::endl;
+	printIndent(std::cout);
+	os << "<" << key << ">" << std::endl;
 
-	printIndent();
-	os << "Parent: ";
-	(parent != nullptr) ? os << parent->key : os << "nullptr";
-	os << std::endl;
-
-	printIndent();
-	os << "Depth: " << depth << std::endl;
+	for (Element* el : elements)
+		os << "<" << el->name << ">" << el->contents << "</" << el->name << ">" << std::endl;
 
 	for (Node* child : children)
 		child->print(os);
+
+	os << "</" << key << ">" << std::endl;
 }
 
 void Node::freeMemory()
@@ -113,14 +115,28 @@ void Node::freeMemory()
 	elements.clear();
 }
 
-void Node::printIndent() const
+void Node::printIndent(std::ostream& os, short offSet) const
 {
-	for (size_t i = 0; i < depth; i++)
-		std::cout << "    ";
+	for (size_t i = 0; i < depth + offSet; i++)
+		os << "  ";
 }
 
 std::ostream& operator << (std::ostream& os, const Node& source)
 {
-	source.print(os);
+	source.printIndent(os);
+	os << "<" << source.key << ">" << std::endl;
+
+	for (Element* el : source.elements)
+	{
+		source.printIndent(os, 1);
+		os << "<" << el->name << ">" << el->contents << "</" << el->name << ">" << std::endl;
+	}
+
+	for (Node* child : source.children)
+		os << *child;
+
+	source.printIndent(os);
+	os << "</" << source.key << ">" << std::endl;
+
 	return os;
 }
