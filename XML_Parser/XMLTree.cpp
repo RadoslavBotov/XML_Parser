@@ -57,17 +57,18 @@ void XMLTree::runProgram()
 		std::cout << "& ";							// prompt for user input
 		std::cin.getline(userInput, 128, '\n');		// get user input
 		
-		indexOfCommand = getIndexOfCommand(userInput);
-
-		if (strlen(userInput) > 6) // if length of command bigger than 6, there may be a name of file after command
+		// if length of command bigger than 6, we check for commands 'open' and 'saveas' and a file name or path
+		if (strlen(userInput) > 6)
 		{
-			bool flag; // set to false if userInput passed to the first getFileName is for command 'open'
+			bool flag; // below we set to false if the userInput passed to the first getFileName is for command 'open'
 					   // otherwise it gets set to true and we check if it's 'saveas' command
 
 			flag = getFileName(fileName, userInput, "open ", 4, indexOfCommand);   // if command is 'open ', get file name or path
 			if (flag)
 				getFileName(newFileName, userInput, "saveas ", 6, indexOfCommand); // if command is 'saveas ', get file name or path
 		}
+		else
+			indexOfCommand = getIndexOfCommand(userInput); // if  length of command is less than 6, we check for other commands
 		
 		switch (indexOfCommand)	// get the command index the user inputs
 		{
@@ -80,7 +81,7 @@ void XMLTree::runProgram()
 				// ... function that reads from file and save information as a tree with root the field 'root'
 			}
 			else
-				std::cout << "> Another file is already opened." << std::endl;
+				std::cout << "> Another file is already opened." << std::endl << std::endl;
 			break;
 
 		case 1:	// close is index 1
@@ -90,7 +91,7 @@ void XMLTree::runProgram()
 				std::cout << "Successfully closed " + fileName << std::endl << std::endl;
 			}
 			else
-				std::cout << "> No file is opend." << std::endl << std::endl;
+				std::cout << "> No file is opened." << std::endl << std::endl;
 			break;
 
 		case 2:	// save is index 2
@@ -109,6 +110,7 @@ void XMLTree::runProgram()
 				// get new file name
 				if (save(newFileName)) // we use save again but we pass the new file name as parameter so we create a new file
 					std::cout << "> Successfully saved another " + newFileName << std::endl << std::endl;
+				newFileName = ""; // we don't need newFileName again so we can get rid of it's information
 			}
 			else
 				std::cout << "No file opened." << std::endl << std::endl;	// if we don't have an 'open' file inform user
@@ -172,15 +174,9 @@ bool XMLTree::getFileName(std::string& fileNameParam, const char* userInput, con
 	{
 		strncpy_s(tempBuffer, userInput + commandSize + 1, strlen(userInput) - commandSize); // get the file name after open
 		fileNameParam = tempBuffer;
-									// as we no longer need tempBuffer we can change it
-		if (strlen(tempBuffer) > 4)	// check if tempBuffer is bigger than 4 symbols so we can safely use strncpy below
-		{
-			strncpy_s(tempBuffer, tempBuffer + strlen(tempBuffer) - 4, 4);
-			if (strcmp(tempBuffer, ".xml") != 0) // check if fileName has '.xml' at the end
-				fileNameParam += ".xml";				 // if not add it at the end
-		}
-		else						// if tempBuffer has less than 4 symbols we can safely say it doesn't
-			fileNameParam += ".xml";		// contain '.xml' and we add it at the end
+
+		if (fileNameParam.find(".xml") == -1) // check if fileNameParam doesn't contain '.xml' and add at the end
+			fileNameParam += ".xml";
 		
 		return false; // userInput is for command so we don't want to enter getFileName() again in runProgram
 	}
@@ -201,16 +197,16 @@ void XMLTree::printHelp() const
 
 bool XMLTree::save(const std::string fileNameParam) const
 {
-	std::ofstream out(fileNameParam);
+	std::ofstream out(fileNameParam);// sets goodbit to false if fileName is an incorrect path
 
-	if (!out)
+	if (!out && fileNameParam != "") //  if there was an error opening file or fileName was empty
 	{
 		std::cout << "> Error saving to " + fileNameParam << std::endl;
-		std::cout << "> File not saved successfully" << std::endl;
+		std::cout << "> File not saved successfully" << std::endl << std::endl;
 		return false;	// return true as to NOT write in runProgram that the file was saved successfully
 	}
 
-	out << *root;	// write tree correctly formated in file
+	out << *root;	// write tree, correctly formated, to file
 	out.close();
 
 	return true;	// return true as to write in runProgram that the file was saved successfully
@@ -218,22 +214,28 @@ bool XMLTree::save(const std::string fileNameParam) const
 
 bool XMLTree::open(const std::string fileNameParam)
 {
-	std::ifstream in(fileNameParam);
+	std::ifstream in(fileNameParam); // normally sets goodbit to false if file doesn't exist or path is incorrect
 
-	if (!in)	// if there was some error when opening file, basically if we try to open a non-existing file
+	if (!in && fileNameParam != "")	// if file doesn't exist or path is incorrect
 	{
-		if (fileNameParam.find('\\') == -1) // if statement is true, fileNameParam doesn't contain '\\' 
-		{
-			std::ofstream out(fileNameParam);
-			out.close();
-			std::cout << "> " + fileNameParam + " does not exist." << std::endl;	// inform user
-			std::cout << "> An empty file with the same name was created." << std::endl << std::endl;
-			return false; // return false as to NOT write in runProgram that the file was opened successfully
-		}
+		std::ofstream out(fileNameParam); // we create a file with that name or path
+		// if file name is NOT a path we don't have a problem and just create a file
 
-		std::cout << "> Error opening " + fileNameParam << std::endl;
-		std::cout << "> File not read successfully" << std::endl << std::endl;
-		return false; // return false as to NOT write in runProgram that the file was opened successfully
+		if (fileNameParam.find('\\') != -1) // if the file name was a path we have to check:
+			if (!out) // if that path was NOT correct
+			{
+				std::cout << "> " + fileNameParam + " does not exist." << std::endl; // inform user
+				std::cout << "> Path was incorrect and a file could not be created." << std::endl << std::endl;
+				return false; // return false as a file could NOT be created
+			}
+			else // if that path was correct
+			{
+				std::cout << "> " + fileNameParam + " does not exist." << std::endl; // inform user
+				std::cout << "> An empty file with the same name was created and can now be opened." << std::endl << std::endl;
+				return true; // return true as a file could be created
+			}
+
+		out.close();
 	}
 
 	//in >> root;	  // read file and save as a tree in the root field
