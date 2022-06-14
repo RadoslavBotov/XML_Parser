@@ -21,8 +21,8 @@ private:
 	short getIndexOfCommand(const char userInput[128]);
 	bool getFileName(std::string& fileNameParam, const char* userInput, const char* command, short commandSize, short& indexParam) const;
 
-	bool open(const std::string fileNameParam);
-	void save(bool fileOpenParam, const std::string fileNameParam, bool command = true) const;
+	void open(bool& fileOpenParam, const std::string fileNameParam);
+	void save(const bool fileOpenParam, const std::string fileNameParam, bool command = true) const;
 	void closeFile(bool& fileOpenParam, const std::string fileNameParam);
 	void printHelp() const;
 };

@@ -74,15 +74,7 @@ void XMLTree::runProgram()
 		switch (indexOfCommand)	// get the command index the user inputs
 		{
 		case 0:	// open <file> is index 0
-			if (!fileOpen)
-			{
-				fileOpen = open(fileName);	// if file is successfully opened -> fileOpen will be true, otherwise it will be false
-				if (fileOpen)				// as such we can use it here instead of creating another boolean or calling open again
-					std::cout << "Successfully opened " + fileName << std::endl << std::endl;
-				// ... function that reads from file and save information as a tree with root the field 'root'
-			}
-			else
-				std::cout << "> Another file is already opened." << std::endl << std::endl;
+			open(fileOpen, fileName);
 			break;
 
 		case 1:	// close is index 1
@@ -188,42 +180,51 @@ bool XMLTree::getFileName(std::string& fileNameParam, const char* userInput, con
 	return true; // userInput wasn't for command so we want to enter getFileName() again and check for 'saveas' command
 }
 
-bool XMLTree::open(const std::string fileNameParam)
+void XMLTree::open(bool& fileOpenParam, const std::string fileNameParam)
 {
 	if (fileNameParam == "")
 	{
 		std::cout << "> No file name given." << std::endl << std::endl;
-		return false;
+		fileOpenParam = false;
+		return;
 	}
 
-	std::ifstream in(fileNameParam); // normally sets goodbit to false if file doesn't exist or path is incorrect
-
-	if (!in && fileNameParam != "")	// if file doesn't exist or path is incorrect
+	if (!fileOpenParam)
 	{
-		std::ofstream out(fileNameParam); // we create a file with that name or path
-		// if file name is NOT a path we don't have a problem and just create a file
+		std::ifstream in(fileNameParam); // normally sets goodbit to false if file doesn't exist or path is incorrect
 
-		if (fileNameParam.find('\\') != -1) // if the file name was a path we have to check:
-			if (!out) // if that path was NOT correct
-			{
-				std::cout << "> " + fileNameParam + " does not exist." << std::endl; // inform user
-				std::cout << "> Path was incorrect and a file could not be created." << std::endl << std::endl;
-				return false; // return false as a file could NOT be created
-			}
-			else // if that path was correct
-			{
-				std::cout << "> " + fileNameParam + " does not exist." << std::endl; // inform user
-				std::cout << "> An empty file with the same name was created and can now be opened." << std::endl << std::endl;
-				return true; // return true as a file could be created
-			}
+		if (!in && fileNameParam != "")	// if file doesn't exist or path is incorrect
+		{
+			std::ofstream out(fileNameParam); // we create a file with that name or path
+			// if file name is NOT a path we don't have a problem and just create a file
 
-		out.close();
+			if (fileNameParam.find('\\') != -1) // if the file name was a path we have to check:
+				if (!out) // if that path was NOT correct
+				{
+					std::cout << "> " + fileNameParam + " does not exist." << std::endl; // inform user
+					std::cout << "> Path was incorrect and a file could not be created." << std::endl << std::endl;
+					fileOpenParam = false;
+					return; // return false as a file could NOT be created
+				}
+
+			std::cout << "> " + fileNameParam + " does not exist." << std::endl; // inform user
+			std::cout << "> An empty file with the same name was created and can now be opened." << std::endl << std::endl;
+			fileOpenParam = true;
+			return; // return true as a file could be created
+
+			out.close();
+		}
+
+		//in >> root;	  // read file and save as a tree in the root field
+		in.close();
+
+		std::cout << "Successfully opened " + fileNameParam << std::endl << std::endl;
+
+		fileOpenParam = true;
+		return;      // return true as to write in runProgram that the file was opened successfully
 	}
-
-	//in >> root;	  // read file and save as a tree in the root field
-	in.close();
-
-	return true;      // return true as to write in runProgram that the file was opened successfully
+	else
+		std::cout << "> Another file is already opened." << std::endl << std::endl;
 }
 
 void XMLTree::save(bool fileOpenParam, const std::string fileNameParam, bool command) const
