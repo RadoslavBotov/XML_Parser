@@ -64,6 +64,7 @@ void XMLTree::runProgram()
 					   // otherwise it gets set to true and we check if it's 'saveas' command
 
 			flag = getFileName(fileName, userInput, "open ", 4, indexOfCommand);   // if command is 'open ', get file name or path
+
 			if (flag)
 				getFileName(newFileName, userInput, "saveas ", 6, indexOfCommand); // if command is 'saveas ', get file name or path
 		}
@@ -85,35 +86,15 @@ void XMLTree::runProgram()
 			break;
 
 		case 1:	// close is index 1
-			if (fileOpen)
-			{
-				fileOpen = false;
-				std::cout << "Successfully closed " + fileName << std::endl << std::endl;
-			}
-			else
-				std::cout << "> No file is opened." << std::endl << std::endl;
+			closeFile(fileOpen, fileName);
 			break;
 
 		case 2:	// save is index 2
-			if (fileOpen)
-			{
-				if (save(fileName))		// we pass the fileName we got from the open command
-					std::cout << "> Successfully saved " + fileName << std::endl << std::endl;
-			}
-			else
-				std::cout << "No file opened." << std::endl << std::endl;	// if we don't have an 'open' file inform user
+			save(fileOpen, fileName);
 			break;
 
 		case 3:	// saveas <file> is index 3
-			if (fileOpen)
-			{
-				// get new file name
-				if (save(newFileName)) // we use save again but we pass the new file name as parameter so we create a new file
-					std::cout << "> Successfully saved another " + newFileName << std::endl << std::endl;
-				newFileName = ""; // we don't need newFileName again so we can get rid of it's information
-			}
-			else
-				std::cout << "No file opened." << std::endl << std::endl;	// if we don't have an 'open' file inform user
+			save(fileOpen, newFileName, false);
 			break;
 
 		case 4:	// help is index 4
@@ -121,23 +102,46 @@ void XMLTree::runProgram()
 			break;
 
 		case 5:	// exit is index 5
-			if (fileOpen && changesMade) // check if we have an open file
+			if (fileOpen && changesMade) // check if we have an open file and made changes to it
 			{
-				std::cout << "> You have an open file with unsaved changes, please select 'close' or 'save' first." << std::endl;
+				fileOpen = false; // even if it's unnecessary
+				std::cout << "> You have an open file with unsaved changes, please select 'close', 'save' or 'saveas' first." << std::endl;
+				
+				short tempIndex = 1; // preset to close program without saving file changes
 				while (true) // until user selects close or save
 				{
 					std::cout << "& ";	// user inputs save or saveas
 					std::cin.getline(userInput, 128, '\n');
 
-					short tempIndex = 1; // preset to close program without saving file changes
-					if (strcmp(userInput, "close") == 0) // close has index 1
+					if (strcmp(userInput, "close") == 0) // check if userInput is close
 						break;
-					else if (strcmp(userInput, "save") == 0)
+					else if (strcmp(userInput, "save") == 0) // check if userInput is save
 					{
-						tempIndex = 2; // set index to save file changes
+						tempIndex = 2;
 						break;
 					}
+					else					// check if userInput is saveas
+						getFileName(newFileName, userInput, "saveas ", 6, tempIndex); // if command is 'saveas ', get file name or path
 				}
+
+				switch (tempIndex)
+				{
+				case 1: // close
+					closeFile(fileOpen, fileName);
+					break;
+
+				case 2: // save
+					save(fileOpen, fileName);
+
+				case 3: // saveas
+					save(fileOpen, fileName, false);
+					break;
+				}
+
+				/*
+				root->~Node(); // free current tree of information
+				root = new Node("root", nullptr); // create new root for XML_Tree encase of another open command
+				*/
 				// saveFile();
 			}
 			runProgram = false;
@@ -156,14 +160,14 @@ short XMLTree::getIndexOfCommand(const char command[7])
 	for (short i = 0; i < 6; i++)
 		if (strcmp(command, commandLines[i]) == 0)
 			return i;
-	
+
 	return -1;
 }
 
 bool XMLTree::getFileName(std::string& fileNameParam, const char* userInput, const char* command, short commandSize, short& indexParam) const
 {
 	char tempBuffer[128]; // store command and a buffer for the file name as strncpy_s doesn't work with string
-	
+
 	if (strcmp(command, "open ") == 0)
 		indexParam = 0;
 	if (strcmp(command, "saveas ") == 0)
@@ -177,43 +181,21 @@ bool XMLTree::getFileName(std::string& fileNameParam, const char* userInput, con
 
 		if (fileNameParam.find(".xml") == -1) // check if fileNameParam doesn't contain '.xml' and add at the end
 			fileNameParam += ".xml";
-		
+
 		return false; // userInput is for command so we don't want to enter getFileName() again in runProgram
 	}
 
 	return true; // userInput wasn't for command so we want to enter getFileName() again and check for 'saveas' command
 }
 
-void XMLTree::printHelp() const
-{
-	std::cout << "The following commands are supported:\n";
-	std::cout << "open <file> ------ opens <file>\n";
-	std::cout << "close ------------ closes currently opened file\n";
-	std::cout << "save ------------- saves the currently open file\n";
-	std::cout << "saveas <file> ---- saves the currently open file in <file>\n";
-	std::cout << "help ------------- prints this information\n";
-	std::cout << "exit ------------- exists the program\n\n";
-}
-
-bool XMLTree::save(const std::string fileNameParam) const
-{
-	std::ofstream out(fileNameParam);// sets goodbit to false if fileName is an incorrect path
-
-	if (!out && fileNameParam != "") //  if there was an error opening file or fileName was empty
-	{
-		std::cout << "> Error saving to " + fileNameParam << std::endl;
-		std::cout << "> File not saved successfully" << std::endl << std::endl;
-		return false;	// return true as to NOT write in runProgram that the file was saved successfully
-	}
-
-	out << *root;	// write tree, correctly formated, to file
-	out.close();
-
-	return true;	// return true as to write in runProgram that the file was saved successfully
-}
-
 bool XMLTree::open(const std::string fileNameParam)
 {
+	if (fileNameParam == "")
+	{
+		std::cout << "> No file name given." << std::endl << std::endl;
+		return false;
+	}
+
 	std::ifstream in(fileNameParam); // normally sets goodbit to false if file doesn't exist or path is incorrect
 
 	if (!in && fileNameParam != "")	// if file doesn't exist or path is incorrect
@@ -242,4 +224,61 @@ bool XMLTree::open(const std::string fileNameParam)
 	in.close();
 
 	return true;      // return true as to write in runProgram that the file was opened successfully
+}
+
+void XMLTree::save(bool fileOpenParam, const std::string fileNameParam, bool command) const
+{
+	if (fileNameParam == "")
+	{
+		std::cout << "> No file name given." << std::endl << std::endl;
+		return;
+	}
+
+	if (fileOpenParam)
+	{
+		std::ofstream out(fileNameParam);// sets goodbit to false if fileName is an incorrect path
+
+		if (!out && fileNameParam != "") //  if there was an error opening file or fileName was empty
+		{
+			std::cout << "> Error saving to " + fileNameParam << std::endl;
+			std::cout << "> File not saved successfully" << std::endl << std::endl;
+			return;	// return true as to NOT write in runProgram that the file was saved successfully
+		}
+
+		out << *root; // write tree, correctly formated, to file
+		out.close();
+
+		if (command) // if true we inform user of 'save'
+			std::cout << "> Successfully saved " + fileNameParam << std::endl << std::endl;
+		else	     // if false we inform user of 'saveas' 
+			std::cout << "> Successfully saved another " + fileNameParam << std::endl << std::endl;
+	}
+	else
+		std::cout << "No file opened." << std::endl << std::endl;	// if we don't have an 'open' file inform user
+
+	return;	// return true as to write in runProgram that the file was saved successfully
+}
+
+void XMLTree::closeFile(bool& fileOpenParam, const std::string fileNameParam)
+{
+	if (fileOpenParam)
+	{
+		fileOpenParam = false; // simulate closing of file
+		root->~Node(); // free current tree of information
+		root = new Node("root", nullptr); // create new root for XML_Tree encase of another open command
+		std::cout << "Successfully closed " + fileNameParam << std::endl << std::endl;
+	}
+	else
+		std::cout << "> No file is opened." << std::endl << std::endl;
+}
+
+void XMLTree::printHelp() const
+{
+	std::cout << "The following commands are supported:\n";
+	std::cout << "open <file> ------ opens <file>\n";
+	std::cout << "close ------------ closes currently opened file\n";
+	std::cout << "save ------------- saves the currently open file\n";
+	std::cout << "saveas <file> ---- saves the currently open file in <file>\n";
+	std::cout << "help ------------- prints this information\n";
+	std::cout << "exit ------------- exists the program\n\n";
 }
