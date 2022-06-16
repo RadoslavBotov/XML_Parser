@@ -86,17 +86,22 @@ void Node::addElement(const std::string name, const std::string contents)
 	elements.push_back(new Element(name, contents));
 }
 
-void Node::print(std::ostream& os) const
+void Node::print(std::ostream& os, bool printChildren) const
 {
-	printIndent(std::cout);
+	printIndent(os);
 	os << "<" << key << ">" << std::endl;
 
 	for (Element* el : elements)
+	{
+		printIndent(os, 1);
 		os << "<" << el->name << ">" << el->contents << "</" << el->name << ">" << std::endl;
+	}
 
-	for (Node* child : children)
-		child->print(os);
+	if (printChildren)
+		for (Node* child : children)
+			child->print(os);
 
+	printIndent(os);
 	os << "</" << key << ">" << std::endl;
 }
 

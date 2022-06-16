@@ -28,7 +28,7 @@ public:
 	void addNode(const Node& source);
 	void addElement(const std::string name, const std::string contents);
 
-	void print(std::ostream& os) const;
+	void print(std::ostream& os, bool printChildren = true) const;
 
 	friend std::ostream& operator << (std::ostream& os, const Node& source);
 

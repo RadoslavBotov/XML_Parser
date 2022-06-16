@@ -1,7 +1,8 @@
 #include<fstream>
 #include "XMLTree.h"
 
-const char XMLTree::commandLines[6][7] = { "open", "close", "save" , "saveas" , "help" , "exit" };
+std::vector <std::string> XMLTree::commandLines = { "open", "close", "save" , "saveas" , "help" , "exit" ,
+									"print", "select",  "set",  "children",  "child",  "text",  "delete",  "newchild",  "xpath"};
 
 XMLTree::XMLTree()
 {
@@ -36,8 +37,9 @@ void XMLTree::runProgram()
 	bool changesMade = false;	// tells us if user has made changes to the XML_Tree
 	std::string fileName;		// name of the file when user uses open
 	std::string newFileName;	// name of the file when user uses saveas as to not lose the original name of file
-	char userInput[128];		// the input we get from user
-	short indexOfCommand = -1;
+	char userInput[128] = {};	// the input we get from user
+	char commandIdentifier[9] = {};	// helps us get the first symbols of user input and check if they are from commandLine
+	short indexOfCommand = -1;	// after identifying command we store it's index from commandLine here
 
 	root->key = "people";
 	root->addNode("person");
@@ -56,20 +58,66 @@ void XMLTree::runProgram()
 	{
 		std::cout << "& ";							// prompt for user input
 		std::cin.getline(userInput, 128, '\n');		// get user input
+		unsigned size = strlen(userInput);
+
+		// if command has a ' ' character, we check for commands with file names, paths or XML commands
+		//if (size > 6)
 		
-		// if length of command bigger than 6, we check for commands 'open' and 'saveas' and a file name or path
-		if (strlen(userInput) > 6)
-		{
-			bool flag; // below we set to false if the userInput passed to the first getFileName is for command 'open'
-					   // otherwise it gets set to true and we check if it's 'saveas' command
-
-			flag = getFileName(fileName, userInput, "open ", 4, indexOfCommand);   // if command is 'open ', get file name or path
-
-			if (flag)
-				getFileName(newFileName, userInput, "saveas ", 6, indexOfCommand); // if command is 'saveas ', get file name or path
+		indexOfCommand = -1; // we reset it as to not break once in the below for()
+		for (unsigned short i = 8; i >= 3; i--) // our commands have a min length of 3 and max length of 8
+		{										// we iterate backwards as to not confuse save for saveas
+			if (indexOfCommand != -1)	// check if we have found a valid command
+				break;
+									 // no command has length 7 so we can saftly skip the check and save a little time
+			if (i != 7 && i <= size) // and ignore userInput with smaller length than i and not do some checks
+			{						 // example: if user inputs 'close' we don't check commands with length bigger than 5
+				strncpy_s(commandIdentifier, userInput, i); // we get the first i symbols from user input
+				indexOfCommand = getIndexOfCommand(commandIdentifier); // and check if they are a valid command
+			}
 		}
-		else
-			indexOfCommand = getIndexOfCommand(userInput); // if  length of command is less than 6, we check for other commands
+
+		// commands 1, 2, 4, 5, 6 are standalone, so we have to check for file name, path or other if other commands were inputed
+		switch (indexOfCommand)
+		{
+		case 0:
+
+			break;
+
+		case 3:
+
+			break;
+
+		case 7:
+			break;
+
+		case 8:
+
+			break;
+
+		case 9:
+
+			break;
+
+		case 10:
+
+			break;
+
+		case 11:
+
+			break;
+
+		case 12:
+
+			break;
+
+		case 13:
+
+			break;
+
+		case 14:
+
+			break;
+		}
 		
 		switch (indexOfCommand)	// get the command index the user inputs
 		{
@@ -140,18 +188,28 @@ void XMLTree::runProgram()
 			std::cout << "> Exiting program ..." << std::endl;
 			break;
 
+		case 6: // print
+			root->print(std::cout);
+			break;
+
 		default: //  if getIndexOfCommand(userInput) has returned -1 -> invalid command
-			std::cout << "> Invalid command." << std::endl << std::endl;
+			std::cout << "> Invalid command. Index: " << indexOfCommand <<std::endl << std::endl;
 			break;
 		}
 	}
 }
 
-short XMLTree::getIndexOfCommand(const char command[7])
+short XMLTree::getIndexOfCommand(const char command[9])
 {
-	for (short i = 0; i < 6; i++)
-		if (strcmp(command, commandLines[i]) == 0)
-			return i;
+	short br = 0;
+
+	for (std::string str : commandLines)
+	{
+		if (command == str)
+			return br;
+
+		br++;
+	}
 
 	return -1;
 }
@@ -159,11 +217,6 @@ short XMLTree::getIndexOfCommand(const char command[7])
 bool XMLTree::getFileName(std::string& fileNameParam, const char* userInput, const char* command, short commandSize, short& indexParam) const
 {
 	char tempBuffer[128]; // store command and a buffer for the file name as strncpy_s doesn't work with string
-
-	if (strcmp(command, "open ") == 0)
-		indexParam = 0;
-	if (strcmp(command, "saveas ") == 0)
-		indexParam = 3;
 
 	strncpy_s(tempBuffer, userInput, commandSize + 1); // we get first commandSize symbols of user input
 	if (strcmp(tempBuffer, command) == 0) // we only need to see if they are the 'open' command
@@ -182,15 +235,15 @@ bool XMLTree::getFileName(std::string& fileNameParam, const char* userInput, con
 
 void XMLTree::open(bool& fileOpenParam, const std::string fileNameParam)
 {
-	if (fileNameParam == "")
-	{
-		std::cout << "> No file name given." << std::endl << std::endl;
-		fileOpenParam = false;
-		return;
-	}
-
 	if (!fileOpenParam)
 	{
+		if (fileNameParam == "")
+		{
+			std::cout << "> No file name given." << std::endl << std::endl;
+			fileOpenParam = false;
+			return;
+		}
+
 		std::ifstream in(fileNameParam); // normally sets goodbit to false if file doesn't exist or path is incorrect
 
 		if (!in && fileNameParam != "")	// if file doesn't exist or path is incorrect
@@ -229,14 +282,14 @@ void XMLTree::open(bool& fileOpenParam, const std::string fileNameParam)
 
 void XMLTree::save(bool fileOpenParam, const std::string fileNameParam, bool command) const
 {
-	if (fileNameParam == "")
-	{
-		std::cout << "> No file name given." << std::endl << std::endl;
-		return;
-	}
-
 	if (fileOpenParam)
 	{
+		if (fileNameParam == "")
+		{
+			std::cout << "> No file name given." << std::endl << std::endl;
+			return;
+		}
+
 		std::ofstream out(fileNameParam);// sets goodbit to false if fileName is an incorrect path
 
 		if (!out && fileNameParam != "") //  if there was an error opening file or fileName was empty
@@ -276,10 +329,19 @@ void XMLTree::closeFile(bool& fileOpenParam, const std::string fileNameParam)
 void XMLTree::printHelp() const
 {
 	std::cout << "The following commands are supported:\n";
-	std::cout << "open <file> ------ opens <file>\n";
-	std::cout << "close ------------ closes currently opened file\n";
-	std::cout << "save ------------- saves the currently open file\n";
-	std::cout << "saveas <file> ---- saves the currently open file in <file>\n";
-	std::cout << "help ------------- prints this information\n";
-	std::cout << "exit ------------- exists the program\n\n";
+	std::cout << "open <file> --------------- opens <file>\n";
+	std::cout << "close --------------------- closes currently opened file\n";
+	std::cout << "save ---------------------- saves the currently open file\n";
+	std::cout << "saveas <file> ------------- saves the currently open file in <file>\n";
+	std::cout << "help ---------------------- prints this information\n";
+	std::cout << "exit ---------------------- exists the program\n";
+	std::cout << "print --------------------- prints xml tree\n";
+	std::cout << "select <id> <key> --------- prints attribute by id and key\n";
+	std::cout << "set <id> <key> <value> ---- sets a value to an attribute\n";
+	std::cout << "children <id> ------------- prints values of attribute\n";
+	std::cout << "child <id> <n> ------------ access to an elements n-th child\n";
+	std::cout << "text <id> ----------------- access to an elements text\n";
+	std::cout << "delete <id> <key> --------- deletes an attribute of an element\n";
+	std::cout << "newchild <id> ------------- adds a new child to element\n";
+	std::cout << "xpath <id> <XPath> -------- simple xpath operations\n\n";
 }

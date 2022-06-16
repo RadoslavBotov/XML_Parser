@@ -16,9 +16,9 @@ public:
 
 private:
 	Node* root;
-	static const char commandLines[6][7];
+	static std::vector <std::string> commandLines;
 
-	short getIndexOfCommand(const char userInput[128]);
+	short getIndexOfCommand(const char command[]);
 	bool getFileName(std::string& fileNameParam, const char* userInput, const char* command, short commandSize, short& indexParam) const;
 
 	void open(bool& fileOpenParam, const std::string fileNameParam);
