@@ -120,6 +120,12 @@ void Node::freeMemory()
 	elements.clear();
 }
 
+void Node::discardWhiteSpace(std::istream& is) const
+{
+	while (is.peek() == ' ')
+		is.get();
+}
+
 void Node::printIndent(std::ostream& os, short offSet) const
 {
 	for (size_t i = 0; i < depth + offSet; i++)
@@ -144,4 +150,14 @@ std::ostream& operator << (std::ostream& os, const Node& source)
 	os << "</" << source.key << ">" << std::endl;
 
 	return os;
+}
+
+std::istream& operator >> (std::istream& is, Node& source)
+{
+	std::string buffer;
+
+	while(std::getline(is, buffer))
+		std::cout << buffer << std::endl;
+
+	return is;
 }

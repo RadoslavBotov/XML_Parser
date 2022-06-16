@@ -37,20 +37,10 @@ void XMLTree::runProgram()
 	bool changesMade = false;	// tells us if user has made changes to the XML_Tree
 	std::string fileName;		// name of the file when user uses open
 	std::string newFileName;	// name of the file when user uses saveas as to not lose the original name of file
+	std::string xmlInfo;		// information after xml commands such as id, key, value, n or xpath
 	char userInput[128] = {};	// the input we get from user
 	char commandIdentifier[9] = {};	// helps us get the first symbols of user input and check if they are from commandLine
 	short indexOfCommand = -1;	// after identifying command we store it's index from commandLine here
-
-	root->key = "people";
-	root->addNode("person");
-	root->addNode("person");
-	root->addNode("person");
-	root->children[0]->addElement("name", "Ivan Burochovski");
-	root->children[0]->addElement("address", "Russia");
-	root->children[1]->addElement("name", "Alex Johns");
-	root->children[1]->addElement("address", "USA");
-	root->children[2]->addElement("name", "Radoslav Botov");
-	root->children[2]->addElement("address", "Bulgaria");
 
 	printHelp();		// prints instructions to console in the beginning of dialog
 
@@ -79,43 +69,44 @@ void XMLTree::runProgram()
 		// commands 1, 2, 4, 5, 6 are standalone, so we have to check for file name, path or other if other commands were inputed
 		switch (indexOfCommand)
 		{
-		case 0:
-
+		case 0: // open
+			getFileName(fileName, userInput, 4);
 			break;
 
-		case 3:
-
+		case 3: // saveas
+			getFileName(newFileName, userInput, 6);
 			break;
 
-		case 7:
+		case 7: // select
+			getXMLInfo(xmlInfo, userInput, 6);
 			break;
 
-		case 8:
-
+		case 8: // set
+			getXMLInfo(xmlInfo, userInput, 3);
 			break;
 
-		case 9:
-
+		case 9: // children
+			getXMLInfo(xmlInfo, userInput, 8);
 			break;
 
-		case 10:
-
+		case 10: // child
+			getXMLInfo(xmlInfo, userInput, 5);
 			break;
 
-		case 11:
-
+		case 11: // text
+			getXMLInfo(xmlInfo, userInput, 4);
 			break;
 
-		case 12:
-
+		case 12: // delete
+			getXMLInfo(xmlInfo, userInput, 6);
 			break;
 
-		case 13:
-
+		case 13: // newchild
+			getXMLInfo(xmlInfo, userInput, 8);
 			break;
 
-		case 14:
-
+		case 14: // xpath
+			getXMLInfo(xmlInfo, userInput, 5);
 			break;
 		}
 		
@@ -161,7 +152,7 @@ void XMLTree::runProgram()
 						break;
 					}
 					else					// check if userInput is saveas
-						getFileName(newFileName, userInput, "saveas ", 6, tempIndex); // if command is 'saveas ', get file name or path
+						getFileName(newFileName, userInput + 7, 6); // if command is 'saveas ', get file name or path
 				}
 
 				switch (tempIndex)
@@ -214,30 +205,34 @@ short XMLTree::getIndexOfCommand(const char command[9])
 	return -1;
 }
 
-bool XMLTree::getFileName(std::string& fileNameParam, const char* userInput, const char* command, short commandSize, short& indexParam) const
+void XMLTree::getFileName(std::string& fileName, const char* userInput, short commandSize) const
 {
-	char tempBuffer[128]; // store command and a buffer for the file name as strncpy_s doesn't work with string
+	char tempBuffer[128] = {}; // store command and a buffer for the file name as strncpy_s didn't work with string for me
 
-	strncpy_s(tempBuffer, userInput, commandSize + 1); // we get first commandSize symbols of user input
-	if (strcmp(tempBuffer, command) == 0) // we only need to see if they are the 'open' command
-	{
-		strncpy_s(tempBuffer, userInput + commandSize + 1, strlen(userInput) - commandSize); // get the file name after open
-		fileNameParam = tempBuffer;
+	// as we know the size of the command user inputed we can start reading from userInput + some offSet
+	// where that offset is commandSize + 1; we assume there is a ' ' symbol after the command so the +1
+	strncpy_s(tempBuffer, userInput + commandSize + 1, strlen(userInput) - commandSize); // get the file name
+	fileName = tempBuffer;
 
-		if (fileNameParam.find(".xml") == -1) // check if fileNameParam doesn't contain '.xml' and add at the end
-			fileNameParam += ".xml";
+	if (fileName.find(".xml") == -1) // check if fileNameParam doesn't contain '.xml' and add at the end
+		fileName += ".xml";
+}
 
-		return false; // userInput is for command so we don't want to enter getFileName() again in runProgram
-	}
+void XMLTree::getXMLInfo(std::string& xmlInfo, const char* userInput, short commandSize) const
+{
+	char tempBuffer[128] = {}; // store command and a buffer for xmlInfo as strncpy_s didn't work with string for me
 
-	return true; // userInput wasn't for command so we want to enter getFileName() again and check for 'saveas' command
+	// as we know the size of the command user inputed we can start reading from userInput + some offSet
+	// where that offset is commandSize + 1; we assume there is a ' ' symbol after the command so the +1
+	strncpy_s(tempBuffer, userInput + commandSize + 1, strlen(userInput) - commandSize); // get id, key, value (depends on command)
+	xmlInfo = tempBuffer;																 // further work in runProgram
 }
 
 void XMLTree::open(bool& fileOpenParam, const std::string fileNameParam)
 {
-	if (!fileOpenParam)
+	if (!fileOpenParam) // check if a file hasn't been already opened
 	{
-		if (fileNameParam == "")
+		if (fileNameParam == "") // check if the file name is empty
 		{
 			std::cout << "> No file name given." << std::endl << std::endl;
 			fileOpenParam = false;
@@ -268,7 +263,7 @@ void XMLTree::open(bool& fileOpenParam, const std::string fileNameParam)
 			out.close();
 		}
 
-		//in >> root;	  // read file and save as a tree in the root field
+		in >> *root;	  // read file and save as a tree in the root field
 		in.close();
 
 		std::cout << "Successfully opened " + fileNameParam << std::endl << std::endl;
@@ -282,9 +277,9 @@ void XMLTree::open(bool& fileOpenParam, const std::string fileNameParam)
 
 void XMLTree::save(bool fileOpenParam, const std::string fileNameParam, bool command) const
 {
-	if (fileOpenParam)
+	if (fileOpenParam) // ckech if a file is opened
 	{
-		if (fileNameParam == "")
+		if (fileNameParam == "") // check if the file name is empty
 		{
 			std::cout << "> No file name given." << std::endl << std::endl;
 			return;
@@ -328,20 +323,20 @@ void XMLTree::closeFile(bool& fileOpenParam, const std::string fileNameParam)
 
 void XMLTree::printHelp() const
 {
-	std::cout << "The following commands are supported:\n";
-	std::cout << "open <file> --------------- opens <file>\n";
-	std::cout << "close --------------------- closes currently opened file\n";
-	std::cout << "save ---------------------- saves the currently open file\n";
-	std::cout << "saveas <file> ------------- saves the currently open file in <file>\n";
-	std::cout << "help ---------------------- prints this information\n";
-	std::cout << "exit ---------------------- exists the program\n";
-	std::cout << "print --------------------- prints xml tree\n";
-	std::cout << "select <id> <key> --------- prints attribute by id and key\n";
-	std::cout << "set <id> <key> <value> ---- sets a value to an attribute\n";
-	std::cout << "children <id> ------------- prints values of attribute\n";
-	std::cout << "child <id> <n> ------------ access to an elements n-th child\n";
-	std::cout << "text <id> ----------------- access to an elements text\n";
-	std::cout << "delete <id> <key> --------- deletes an attribute of an element\n";
-	std::cout << "newchild <id> ------------- adds a new child to element\n";
-	std::cout << "xpath <id> <XPath> -------- simple xpath operations\n\n";
+	std::cout << "The following commands are supported:\n";									// Index in commandLies:
+	std::cout << "open <file> --------------- opens <file>\n";								// 0
+	std::cout << "close --------------------- closes currently opened file\n";				// 1
+	std::cout << "save ---------------------- saves the currently open file\n";				// 2
+	std::cout << "saveas <file> ------------- saves the currently open file in <file>\n";	// 3
+	std::cout << "help ---------------------- prints this information\n";					// 4
+	std::cout << "exit ---------------------- exists the program\n";						// 5
+	std::cout << "print --------------------- prints xml tree\n";							// 6
+	std::cout << "select <id> <key> --------- prints attribute by id and key\n";			// 7
+	std::cout << "set <id> <key> <value> ---- sets a value to an attribute\n";				// 8
+	std::cout << "children <id> ------------- prints values of attribute\n";				// 9
+	std::cout << "child <id> <n> ------------ access to an elements n-th child\n";			// 10
+	std::cout << "text <id> ----------------- access to an elements text\n";				// 11
+	std::cout << "delete <id> <key> --------- deletes an attribute of an element\n";		// 12
+	std::cout << "newchild <id> ------------- adds a new child to element\n";				// 13
+	std::cout << "xpath <id> <XPath> -------- simple xpath operations\n\n";					// 14
 }

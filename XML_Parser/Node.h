@@ -31,6 +31,7 @@ public:
 	void print(std::ostream& os, bool printChildren = true) const;
 
 	friend std::ostream& operator << (std::ostream& os, const Node& source);
+	friend std::istream& operator >> (std::istream& is, Node& source);
 
 // variables / fields
 	std::string id;
@@ -44,4 +45,6 @@ public:
 private: // internal functions
 	void printIndent(std::ostream& os, short offSet = 0) const;
 	void freeMemory();
+
+	void discardWhiteSpace(std::istream& is) const;
 };

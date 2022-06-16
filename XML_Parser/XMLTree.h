@@ -19,7 +19,8 @@ private:
 	static std::vector <std::string> commandLines;
 
 	short getIndexOfCommand(const char command[]);
-	bool getFileName(std::string& fileNameParam, const char* userInput, const char* command, short commandSize, short& indexParam) const;
+	void getFileName(std::string& fileNameParam, const char* userInput, short commandSize) const;
+	void getXMLInfo(std::string& xmlInfo, const char* userInput, short commandSize) const;
 
 	void open(bool& fileOpenParam, const std::string fileNameParam);
 	void save(const bool fileOpenParam, const std::string fileNameParam, bool command = true) const;
