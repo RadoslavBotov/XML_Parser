@@ -28,8 +28,6 @@ public:
 	void addNode(const Node& source);
 	void addElement(const std::string name, const std::string contents);
 
-	void print(std::ostream& os, bool printChildren = true) const;
-
 	friend std::ostream& operator << (std::ostream& os, const Node& source);
 	friend std::istream& operator >> (std::istream& is, Node& source);
 
@@ -46,5 +44,6 @@ private: // internal functions
 	void printIndent(std::ostream& os, short offSet = 0) const;
 	void freeMemory();
 
-	void discardWhiteSpace(std::istream& is) const;
+	const void setKey(std::string buffer, char symbol);
+	//std::string getKey(std::string& buffer) const;
 };

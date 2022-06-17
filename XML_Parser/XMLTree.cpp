@@ -44,6 +44,16 @@ void XMLTree::runProgram()
 
 	printHelp();		// prints instructions to console in the beginning of dialog
 
+	root->addNode("node_1");
+	root->addNode("node_2");
+	root->addNode("node_3");
+	root->children[0]->addNode("node_1_1");
+
+	root->addElement("qwe", "123");
+	root->children[0]->addElement("qwe", "123");
+	root->children[1]->addElement("qwe", "123");
+	root->children[2]->addElement("qwe", "123");
+
 	while (runProgram)	// while runProgramm is true, run dialog with user / until command exit
 	{
 		std::cout << "& ";							// prompt for user input
@@ -180,7 +190,7 @@ void XMLTree::runProgram()
 			break;
 
 		case 6: // print
-			root->print(std::cout);
+			std::cout << *root;
 			break;
 
 		default: //  if getIndexOfCommand(userInput) has returned -1 -> invalid command
@@ -263,7 +273,7 @@ void XMLTree::open(bool& fileOpenParam, const std::string fileNameParam)
 			out.close();
 		}
 
-		in >> *root;	  // read file and save as a tree in the root field
+		//in >> *root;	  // read file and save as a tree in the root field
 		in.close();
 
 		std::cout << "Successfully opened " + fileNameParam << std::endl << std::endl;

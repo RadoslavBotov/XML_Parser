@@ -86,25 +86,6 @@ void Node::addElement(const std::string name, const std::string contents)
 	elements.push_back(new Element(name, contents));
 }
 
-void Node::print(std::ostream& os, bool printChildren) const
-{
-	printIndent(os);
-	os << "<" << key << ">" << std::endl;
-
-	for (Element* el : elements)
-	{
-		printIndent(os, 1);
-		os << "<" << el->name << ">" << el->contents << "</" << el->name << ">" << std::endl;
-	}
-
-	if (printChildren)
-		for (Node* child : children)
-			child->print(os);
-
-	printIndent(os);
-	os << "</" << key << ">" << std::endl;
-}
-
 void Node::freeMemory()
 {
 	id = "0";
@@ -120,10 +101,9 @@ void Node::freeMemory()
 	elements.clear();
 }
 
-void Node::discardWhiteSpace(std::istream& is) const
+const void Node::setKey(std::string buffer, char symbol)
 {
-	while (is.peek() == ' ')
-		is.get();
+	key = buffer.substr(0, buffer.find(symbol));
 }
 
 void Node::printIndent(std::ostream& os, short offSet) const
@@ -135,7 +115,10 @@ void Node::printIndent(std::ostream& os, short offSet) const
 std::ostream& operator << (std::ostream& os, const Node& source)
 {
 	source.printIndent(os);
-	os << "<" << source.key << ">" << std::endl;
+	os << "<" << source.key;
+
+	//if (source.id != "")
+		os << " id=\"" << source.id << "\">" << std::endl;
 
 	for (Element* el : source.elements)
 	{
@@ -155,9 +138,44 @@ std::ostream& operator << (std::ostream& os, const Node& source)
 std::istream& operator >> (std::istream& is, Node& source)
 {
 	std::string buffer;
+	std::string key;
+	std::string current;
+	
+	//while (is) // while file hasn't ended
+	{
+		getline(is, buffer, '<');	// we get rid of the opening '<', as each line starts with one
+		getline(is, buffer, '\n');	// get the rest of the line in the document
 
-	while(std::getline(is, buffer))
+		if (buffer.find('<') != -1) // if we find another opening '<', then that line is an element/attribute
+		{
+			current = buffer.substr(0, buffer.find('>'));
+			//source.addElement(current, );
+		}
+
+		// we assume buffer is an <entry> line so:
+		if (buffer.find("id") != -1)	// we check if it has id and if true:
+		{
+			source.setKey(buffer, ' ');	// we set the key of current node before we get id 
+
+			size_t index = buffer.find('\"') + 1;	// as we know there is an id, we get the pos of the opening "
+			current = buffer.substr(index, buffer.find('\"', index) - index);	// a little math to find length of id
+			source.id = current;									// set id 
+		}
+		else
+			source.setKey(buffer, '>');
+
+		if (buffer.find('<', 1))
+		{
+
+		}
 		std::cout << buffer << std::endl;
+		std::cout << current << std::endl;
+
+		//if (buffer.find('/') != -1)
+
+		//source.addNode("!!!");
+		// current node or element ended
+	}
 
 	return is;
 }

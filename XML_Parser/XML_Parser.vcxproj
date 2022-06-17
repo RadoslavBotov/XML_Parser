@@ -30,6 +30,7 @@
     <ClInclude Include="XMLTree.h" />
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="qwe.xml" />
     <Xml Include="testFile.xml" />
     <Xml Include="testFileBackup.xml" />
   </ItemGroup>

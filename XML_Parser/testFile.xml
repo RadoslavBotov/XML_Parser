@@ -1,5 +1,7 @@
-<people id="root_id">
-  <person id="0">
+<people id="0">
+  
+  <name> .       placeholder     .</name>
+  <person id="1">
     <name>John Smith</name>
     <address>USA</address>
   </person>
