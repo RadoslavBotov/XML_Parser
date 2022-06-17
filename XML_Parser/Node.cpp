@@ -75,7 +75,7 @@ void Node::addNode(const Node& source)
 	Node* newNode = new Node(source);
 	newNode->parent = this;
 
-	newNode->id = ""; // default id
+	//newNode->id = ""; // default id
 	newNode->depth = newNode->parent->depth + 1;
 
 	children.push_back(newNode);
@@ -134,21 +134,20 @@ std::ostream& operator << (std::ostream& os, const Node& source)
 
 std::istream& operator >> (std::istream& is, Node& source)
 {
-	static bool inRoot = true;
-	size_t indexOfChild = 0;
-	std::string buffer;
-	std::string current;
-	std::string name;
+	static bool inRoot = true;	// not the best way to read root node but it works
+	size_t indexOfChild = 0;	// as a deep copy of node is used in addNode, we need a way to track with which child we are working
+	std::string buffer;			// we first read from file in buffer and from there we check some things and act accordingly
+	std::string helper1;		// helper string when we want to get the text and id for a node
+	std::string helper2;
 
-	// there are 3 types of lines:
-	// * <entry> - key of node, which we read and set to key of node
+	// there are 3 types of lines we get in buffer:
+	// * <entry> - the name of the node
 	//	if is has id some additional check are made and id of node is set, otherwise we give it an unique id of our own
-	// * <element>text</...> - read element name and text and set accordingly then add to node 
-	// * </end> - when we encounter one we return
-	// we just have to know when and how to go up and down the tree - kind of recursively
+	// * <element>text</...> - element name and text
+	// * </end> - when we encounter one we return is
 
-	// code only for root node of tree
-	if (inRoot)
+	// code only for root node of tree, not the best way but it works
+	if (inRoot)	// it executes only once, on the first (is >> *root)
 	{
 		inRoot = false;
 
@@ -158,9 +157,9 @@ std::istream& operator >> (std::istream& is, Node& source)
 		{
 			source.key = source.getKey(buffer, ' ');	// we set the key of current node before we get id 
 
-			size_t index = buffer.find('\"') + 1;	// as we know there is an id, we get the pos of the opening "
-			current = buffer.substr(index, buffer.find('\"', index) - index);	// a little math to find length of id
-			source.id = current;									// set id 
+			size_t index = buffer.find('\"') + 1;	// as we know there is an id, we get the position of the opening \"
+			helper1 = buffer.substr(index, buffer.find('\"', index) - index);	// a little math to find length of id
+			source.id = helper1;									// set id 
 		}
 		else
 			source.key = source.getKey(buffer, ' ');
@@ -168,6 +167,9 @@ std::istream& operator >> (std::istream& is, Node& source)
 
 	while (is) // while file hasn't ended
 	{
+		helper1 = "";
+		helper2 = "";
+
 		getline(is, buffer, '<');	// we get rid of the opening '<', as each line starts with one
 		getline(is, buffer, '\n');	// get the rest of the line in the document
 
@@ -179,25 +181,25 @@ std::istream& operator >> (std::istream& is, Node& source)
 
 		if (buffer.find('<') != -1) // if we find another opening '<', then that line is an element/attribute
 		{
-			name = source.getKey(buffer, '>');
-			current = buffer.substr(buffer.find('>') + 1, buffer.find('<') - name.length() - 1);
-			source.addElement(name, current);
+			helper2 = source.getKey(buffer, '>');
+			helper1 = buffer.substr(buffer.find('>') + 1, buffer.find('<') - helper2.length() - 1);
+			source.addElement(helper2, helper1);
 		}
 		else
 		{   // we assume buffer is an <entry> line so:
 			if (buffer.find("id") != -1)	// we check if it has id and if true:
 			{
-				current = source.getKey(buffer, ' ');	// we set the key of current node before we get id 
+				helper1 = source.getKey(buffer, ' ');	// we set the key of current node before we get id 
 
 				size_t index = buffer.find('\"') + 1;	// as we know there is an id, we get the pos of the opening "
-				name = buffer.substr(index, buffer.find('\"', index) - index);	// a little math to find length of id									// set id 
+				helper2 = buffer.substr(index, buffer.find('\"', index) - index);	// a little math to find length of id									// set id 
 			}
 			else
-				current = source.getKey(buffer, ' ');
+				helper1 = source.getKey(buffer, ' ');
 
-			Node child(current, &source); // either not make a deep copy or something else 
-			child.id = name;
+			Node child(helper1, &source); // either not make a deep copy or something else 
 			source.addNode(child);
+			source.children[indexOfChild]->id = helper2;
 			is >> *source.children[indexOfChild++];
 		}
 	}

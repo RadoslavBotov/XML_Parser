@@ -1,5 +1,5 @@
 <people id="0">
-  <person id="">
+  <person id="1">
     <name>John Smith</name>
       <dog id="qwe">
         <name>Blacky</name>
@@ -8,11 +8,11 @@
         </dog>
     <address>USA</address>
   </person>
-  <person id="">
+  <person id="2">
     <name>Greg Pauling</name>
     <address>Austria</address>
   </person>
-  <person id="">
+  <person id="3">
     <name>Radoslav Botov</name>
     <address>Bulgaria</address>
   </person>
