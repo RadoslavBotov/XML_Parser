@@ -1,16 +1,19 @@
 <people id="0">
-  
-  <name> .       placeholder     .</name>
-  <person id="1">
+  <person id="">
     <name>John Smith</name>
+      <dog id="qwe">
+        <name>Blacky</name>
+        <age>5</age>
+        <gender>male</gender>
+        </dog>
     <address>USA</address>
   </person>
-  <person id="0_1">
-    <name>Ivan Petrov</name>
-    <address>Bulgaria</address>
+  <person id="">
+    <name>Greg Pauling</name>
+    <address>Austria</address>
   </person>
-  <person id="0_2">
-    <name>Ivan Petrov</name>
+  <person id="">
+    <name>Radoslav Botov</name>
     <address>Bulgaria</address>
   </person>
 </people>

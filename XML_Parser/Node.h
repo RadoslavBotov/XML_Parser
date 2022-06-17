@@ -44,6 +44,6 @@ private: // internal functions
 	void printIndent(std::ostream& os, short offSet = 0) const;
 	void freeMemory();
 
-	const void setKey(std::string buffer, char symbol);
+	const std::string getKey(std::string buffer, char symbol);
 	//std::string getKey(std::string& buffer) const;
 };

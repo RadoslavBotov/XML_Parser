@@ -75,7 +75,7 @@ void Node::addNode(const Node& source)
 	Node* newNode = new Node(source);
 	newNode->parent = this;
 
-	newNode->id = parent->id + "_";
+	newNode->id = ""; // default id
 	newNode->depth = newNode->parent->depth + 1;
 
 	children.push_back(newNode);
@@ -101,9 +101,9 @@ void Node::freeMemory()
 	elements.clear();
 }
 
-const void Node::setKey(std::string buffer, char symbol)
+const std::string Node::getKey(std::string buffer, char symbol)
 {
-	key = buffer.substr(0, buffer.find(symbol));
+	return buffer.substr(0, buffer.find(symbol));
 }
 
 void Node::printIndent(std::ostream& os, short offSet) const
@@ -115,10 +115,7 @@ void Node::printIndent(std::ostream& os, short offSet) const
 std::ostream& operator << (std::ostream& os, const Node& source)
 {
 	source.printIndent(os);
-	os << "<" << source.key;
-
-	//if (source.id != "")
-		os << " id=\"" << source.id << "\">" << std::endl;
+	os << "<" << source.key << " id=\"" << source.id << "\">" << std::endl;
 
 	for (Element* el : source.elements)
 	{
@@ -137,45 +134,75 @@ std::ostream& operator << (std::ostream& os, const Node& source)
 
 std::istream& operator >> (std::istream& is, Node& source)
 {
+	static bool inRoot = true;
+	size_t indexOfChild = 0;
 	std::string buffer;
-	std::string key;
 	std::string current;
-	
-	//while (is) // while file hasn't ended
+	std::string name;
+
+	// there are 3 types of lines:
+	// * <entry> - key of node, which we read and set to key of node
+	//	if is has id some additional check are made and id of node is set, otherwise we give it an unique id of our own
+	// * <element>text</...> - read element name and text and set accordingly then add to node 
+	// * </end> - when we encounter one we return
+	// we just have to know when and how to go up and down the tree - kind of recursively
+
+	// code only for root node of tree
+	if (inRoot)
 	{
+		inRoot = false;
+
 		getline(is, buffer, '<');	// we get rid of the opening '<', as each line starts with one
 		getline(is, buffer, '\n');	// get the rest of the line in the document
-
-		if (buffer.find('<') != -1) // if we find another opening '<', then that line is an element/attribute
-		{
-			current = buffer.substr(0, buffer.find('>'));
-			//source.addElement(current, );
-		}
-
-		// we assume buffer is an <entry> line so:
 		if (buffer.find("id") != -1)	// we check if it has id and if true:
 		{
-			source.setKey(buffer, ' ');	// we set the key of current node before we get id 
+			source.key = source.getKey(buffer, ' ');	// we set the key of current node before we get id 
 
 			size_t index = buffer.find('\"') + 1;	// as we know there is an id, we get the pos of the opening "
 			current = buffer.substr(index, buffer.find('\"', index) - index);	// a little math to find length of id
 			source.id = current;									// set id 
 		}
 		else
-			source.setKey(buffer, '>');
-
-		if (buffer.find('<', 1))
-		{
-
-		}
-		std::cout << buffer << std::endl;
-		std::cout << current << std::endl;
-
-		//if (buffer.find('/') != -1)
-
-		//source.addNode("!!!");
-		// current node or element ended
+			source.key = source.getKey(buffer, ' ');
 	}
+
+	while (is) // while file hasn't ended
+	{
+		getline(is, buffer, '<');	// we get rid of the opening '<', as each line starts with one
+		getline(is, buffer, '\n');	// get the rest of the line in the document
+
+		if (buffer.find('<') == -1 && buffer.find('/') != -1) // something to serve as floor of operator >>
+			if (source.parent != nullptr) // if we are in root of tree we don't want to return but break from while
+				return is;					  // so we can read file to end and not corrupt it or something
+			else
+				break;
+
+		if (buffer.find('<') != -1) // if we find another opening '<', then that line is an element/attribute
+		{
+			name = source.getKey(buffer, '>');
+			current = buffer.substr(buffer.find('>') + 1, buffer.find('<') - name.length() - 1);
+			source.addElement(name, current);
+		}
+		else
+		{   // we assume buffer is an <entry> line so:
+			if (buffer.find("id") != -1)	// we check if it has id and if true:
+			{
+				current = source.getKey(buffer, ' ');	// we set the key of current node before we get id 
+
+				size_t index = buffer.find('\"') + 1;	// as we know there is an id, we get the pos of the opening "
+				name = buffer.substr(index, buffer.find('\"', index) - index);	// a little math to find length of id									// set id 
+			}
+			else
+				current = source.getKey(buffer, ' ');
+
+			Node child(current, &source); // either not make a deep copy or something else 
+			child.id = name;
+			source.addNode(child);
+			is >> *source.children[indexOfChild++];
+		}
+	}
+
+	while (getline(is, buffer)); // read any leftover symbols in file if there are any
 
 	return is;
 }
