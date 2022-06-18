@@ -87,35 +87,35 @@ void XMLTree::runProgram()
 			getFileName(newFileName, userInput, 6);
 			break;
 
-		case 7: // select
+		case 7: // select <id> <key>
 			getXMLInfo(xmlInfo, userInput, 6);
 			break;
 
-		case 8: // set
+		case 8: // set <id> <key> <value>
 			getXMLInfo(xmlInfo, userInput, 3);
 			break;
 
-		case 9: // children
+		case 9: // children <id>
 			getXMLInfo(xmlInfo, userInput, 8);
 			break;
 
-		case 10: // child
+		case 10: // child <id> <n>
 			getXMLInfo(xmlInfo, userInput, 5);
 			break;
 
-		case 11: // text
+		case 11: // text <id>
 			getXMLInfo(xmlInfo, userInput, 4);
 			break;
 
-		case 12: // delete
+		case 12: // delete <id> <key>
 			getXMLInfo(xmlInfo, userInput, 6);
 			break;
 
-		case 13: // newchild
+		case 13: // newchild <id>
 			getXMLInfo(xmlInfo, userInput, 8);
 			break;
 
-		case 14: // xpath
+		case 14: // xpath <id> <XPath>
 			getXMLInfo(xmlInfo, userInput, 5);
 			break;
 		}
@@ -124,6 +124,7 @@ void XMLTree::runProgram()
 		{
 		case 0:	// open <file> is index 0
 			open(fileOpen, fileName);
+			getNodesDFS(root);
 			break;
 
 		case 1:	// close is index 1
@@ -193,6 +194,30 @@ void XMLTree::runProgram()
 			std::cout << *root << std::endl;
 			break;
 
+		case 7: // select <id> <key>
+			break;
+
+		case 8: // set <id> <key> <value>
+			break;
+
+		case 9: // children <id>
+			break;
+
+		case 10: // child <id> <n>
+			break;
+
+		case 11: // text <id>
+			break;
+
+		case 12: // delete <id> <key>
+			break;
+
+		case 13: // newchild <id>
+			break;
+
+		case 14: // xpath <id> <XPath>
+			break;
+
 		default: //  if getIndexOfCommand(userInput) has returned -1 -> invalid command
 			std::cout << "> Invalid command. Index: " << indexOfCommand <<std::endl << std::endl;
 			break;
@@ -236,6 +261,17 @@ void XMLTree::getXMLInfo(std::string& xmlInfo, const char* userInput, short comm
 	// where that offset is commandSize + 1; we assume there is a ' ' symbol after the command so the +1
 	strncpy_s(tempBuffer, userInput + commandSize + 1, strlen(userInput) - commandSize); // get id, key, value (depends on command)
 	xmlInfo = tempBuffer;																 // further work in runProgram
+}
+
+void XMLTree::getNodesDFS(Node* currentNode)
+{	
+	size_t index = 0;
+	listOfNodes.push_back(currentNode);
+
+	while (index < currentNode->children.size())
+		getNodesDFS(currentNode->children[index++]);
+
+	return;
 }
 
 void XMLTree::open(bool& fileOpenParam, const std::string fileNameParam)

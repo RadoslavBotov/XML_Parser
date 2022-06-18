@@ -16,11 +16,13 @@ public:
 
 private:
 	Node* root;
+	std::vector <Node*> listOfNodes; // we will use this to skip using DFS every time we need to change nodes of tree	
 	static std::vector <std::string> commandLines;
 
-	short getIndexOfCommand(const char command[]);
+	short getIndexOfCommand(const char command[9]);
 	void getFileName(std::string& fileNameParam, const char* userInput, short commandSize) const;
 	void getXMLInfo(std::string& xmlInfo, const char* userInput, short commandSize) const;
+	void getNodesDFS(Node* currentNode);
 
 	void open(bool& fileOpenParam, const std::string fileNameParam);
 	void save(const bool fileOpenParam, const std::string fileNameParam, bool command = true) const;

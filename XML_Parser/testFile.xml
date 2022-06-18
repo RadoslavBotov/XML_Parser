@@ -1,14 +1,14 @@
-<people id="0">
+<people>
   <person id="1">
     <name>John Smith</name>
-      <dog id="qwe">
+      <dog id="">
         <name>Blacky</name>
         <age>5</age>
         <gender>male</gender>
         </dog>
     <address>USA</address>
   </person>
-  <person id="2">
+  <person id="">
     <name>Greg Pauling</name>
     <address>Austria</address>
   </person>

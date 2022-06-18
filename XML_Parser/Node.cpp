@@ -144,7 +144,7 @@ std::istream& operator >> (std::istream& is, Node& source)
 	// * <entry> - the name of the node
 	//	if is has id some additional check are made and id of node is set, otherwise we give it an unique id of our own
 	// * <element>text</...> - element name and text
-	// * </end> - when we encounter one we return is
+	// * </entry> - ending of current node and we have to go up a level in the tree
 
 	// code only for root node of tree, not the best way but it works
 	if (inRoot)	// it executes only once, on the first (is >> *root)
@@ -162,7 +162,7 @@ std::istream& operator >> (std::istream& is, Node& source)
 			source.id = helper1;									// set id 
 		}
 		else
-			source.key = source.getKey(buffer, ' ');
+			source.key = source.getKey(buffer, '>');
 	}
 
 	while (is) // while file hasn't ended
@@ -175,9 +175,9 @@ std::istream& operator >> (std::istream& is, Node& source)
 
 		if (buffer.find('<') == -1 && buffer.find('/') != -1) // something to serve as floor of operator >>
 			if (source.parent != nullptr) // if we are in root of tree we don't want to return but break from while
-				return is;					  // so we can read file to end and not corrupt it or something
+				return is;				  // so we can read file to end and not corrupt it or something
 			else
-				break;
+				break; // we break only when buffer contains "</" or we go up a level in the tree
 
 		if (buffer.find('<') != -1) // if we find another opening '<', then that line is an element/attribute
 		{
@@ -195,12 +195,13 @@ std::istream& operator >> (std::istream& is, Node& source)
 				helper2 = buffer.substr(index, buffer.find('\"', index) - index);	// a little math to find length of id									// set id 
 			}
 			else
-				helper1 = source.getKey(buffer, ' ');
+				helper1 = source.getKey(buffer, '>');
 
-			Node child(helper1, &source); // either not make a deep copy or something else 
-			source.addNode(child);
-			source.children[indexOfChild]->id = helper2;
-			is >> *source.children[indexOfChild++];
+			Node child(helper1, &source); // we make a deep copy, need the indexOfCommand to keep track of current nodes' children
+			source.addNode(child);		  // some internal logic of addNode messes up the id 
+			source.children[indexOfChild]->id = helper2; // so we set it again afterworlds
+			
+			is >> *source.children[indexOfChild++]; // we go down a level in the tree
 		}
 	}
 
