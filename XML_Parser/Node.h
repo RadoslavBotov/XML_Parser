@@ -1,7 +1,7 @@
 #pragma once
 #include<string>
 #include<vector>
-#include"Element.h"
+#include"Key.h"
 
 struct Node
 {
@@ -10,7 +10,7 @@ public:
 	/// Constructor with parameters.
 	///
 	/// Parameters for key value and parent node pointer.
-	Node(std::string keyParam, const Node* parentParam);
+	Node(std::string nameParam, const Node* parentParam);
 	/// Copy constructor.
 	/// 
 	/// .
@@ -24,7 +24,7 @@ public:
 	/// Uses freeMemory() to clear.
 	~Node();
 
-	void addNode(std::string keyParam);
+	void addNode(std::string nameParam);
 	void addNode(const Node& source);
 	void addElement(const std::string name, const std::string contents);
 
@@ -33,9 +33,9 @@ public:
 
 // variables / fields
 	std::string id;
-	std::string key;
+	std::string name;
 	std::vector <Node*> children;
-	std::vector <Element*> elements;
+	std::vector <Key*> keys;
 
 	const Node* parent;
 	unsigned depth;

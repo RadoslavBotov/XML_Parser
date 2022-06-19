@@ -146,7 +146,7 @@ void XMLTree::runProgram()
 		case 5:	// exit is index 5
 			if (fileOpen && changesMade) // check if we have an open file and made changes to it
 			{
-				fileOpen = false; // even if it's unnecessary
+				//fileOpen = false; // even if it's unnecessary
 				std::cout << "> You have an open file with unsaved changes, please select 'close', 'save' or 'saveas' first." << std::endl;
 				
 				short tempIndex = 1; // preset to close program without saving file changes
@@ -163,7 +163,15 @@ void XMLTree::runProgram()
 						break;
 					}
 					else					// check if userInput is saveas
-						getFileName(newFileName, userInput + 7, 6); // if command is 'saveas ', get file name or path
+					{
+						strncpy_s(commandIdentifier, userInput, 6);
+						if (strcmp(commandIdentifier, "saveas") == 0)
+						{
+							tempIndex = 3;
+							getFileName(newFileName, userInput, 6); // if command is 'saveas ', get file name or path
+							break;
+						}
+					}
 				}
 
 				switch (tempIndex)
@@ -174,17 +182,12 @@ void XMLTree::runProgram()
 
 				case 2: // save
 					save(fileOpen, fileName);
+					break;
 
 				case 3: // saveas
-					save(fileOpen, fileName, false);
+					save(fileOpen, newFileName, false);
 					break;
 				}
-
-				/*
-				root->~Node(); // free current tree of information
-				root = new Node("root", nullptr); // create new root for XML_Tree encase of another open command
-				*/
-				// saveFile();
 			}
 			runProgram = false;
 			std::cout << "> Exiting program ..." << std::endl;
@@ -195,28 +198,60 @@ void XMLTree::runProgram()
 			break;
 
 		case 7: // select <id> <key>
+			if (fileOpen)
+				select(xmlInfo);
+			else
+				std::cout << "> No file is opened." << std::endl << std::endl;
 			break;
 
 		case 8: // set <id> <key> <value>
+			if (fileOpen)
+				set(xmlInfo, changesMade);
+			else
+				std::cout << "> No file is opened." << std::endl << std::endl;
 			break;
 
 		case 9: // children <id>
+			if (fileOpen)
+				select(xmlInfo);
+			else
+				std::cout << "> No file is opened." << std::endl << std::endl;
 			break;
 
 		case 10: // child <id> <n>
+			if (fileOpen)
+				select(xmlInfo);
+			else
+				std::cout << "> No file is opened." << std::endl << std::endl;
 			break;
 
 		case 11: // text <id>
+			if (fileOpen)
+				select(xmlInfo);
+			else
+				std::cout << "> No file is opened." << std::endl << std::endl;
 			break;
 
 		case 12: // delete <id> <key>
+			if (fileOpen)
+				select(xmlInfo);
+			else
+				std::cout << "> No file is opened." << std::endl << std::endl;
 			break;
 
 		case 13: // newchild <id>
+			if (fileOpen)
+				select(xmlInfo);
+			else
+				std::cout << "> No file is opened." << std::endl << std::endl;
 			break;
 
-		case 14: // xpath <id> <XPath>
-			break;
+		//case 14: // xpath <id> <XPath>
+		//	if (fileOpen)
+		//		select(xmlInfo);
+		//	else
+		//		std::cout << "> No file is opened." << std::endl << std::endl;
+		//	break;
 
 		default: //  if getIndexOfCommand(userInput) has returned -1 -> invalid command
 			std::cout << "> Invalid command. Index: " << indexOfCommand <<std::endl << std::endl;
@@ -385,4 +420,98 @@ void XMLTree::printHelp() const
 	std::cout << "delete <id> <key> --------- deletes an attribute of an element\n";		// 12
 	std::cout << "newchild <id> ------------- adds a new child to element\n";				// 13
 	std::cout << "xpath <id> <XPath> -------- simple xpath operations\n\n";					// 14
+}
+
+void XMLTree::select(std::string xmlInfo) const // select <id> <key>
+{
+	if (xmlInfo != "")
+	{
+		std::string idParam = xmlInfo.substr(0, xmlInfo.find(' '));
+		std::string keyParam = xmlInfo.substr(xmlInfo.find(' ') + 1);
+
+		for (const Node* node : listOfNodes)
+			if (node->id == idParam) // xmlInfo.substr(0)
+			{
+				for (const Key* key : node->keys)
+					if (key->name == keyParam) // xmlInfo.substr(0)
+					{
+						std::cout << "> Value: " << key->value << std::endl << std::endl;
+						return;
+					}
+
+				break;
+			}
+
+		std::cout << "> The id is wrong or the key doesn't exist." << std::endl;
+	}
+	else
+		std::cout<< "> No id and key inputed." << std::endl;
+}
+
+void XMLTree::set(std::string xmlInfo, bool& changesMade) const  // set <id> <key> <value>
+{
+	if (xmlInfo != "")
+	{
+		std::string idParam = xmlInfo.substr(0, xmlInfo.find(' '));
+		xmlInfo = xmlInfo.substr(xmlInfo.find(' ') + 1);
+		std::string keyParam = xmlInfo.substr(0, xmlInfo.find(' '));
+		std::string valueParam = xmlInfo.substr(xmlInfo.find(' ') + 1);
+
+		for (const Node* node : listOfNodes)
+			if (node->id == idParam) // xmlInfo.substr(0)
+			{
+				for (Key* key : node->keys)
+					if (key->name == keyParam) // xmlInfo.substr(0)
+					{
+						changesMade = true;
+
+						std::cout << "> Value '" << key->value;
+						key->value = valueParam;
+						std::cout << "' successfully changed to: " << key->value << std::endl << std::endl;
+
+						return;
+					}
+
+				break;
+			}
+
+		std::cout << "> The id is wrong or the key doesn't exist." << std::endl;
+	}
+	else
+		std::cout << "> No id, key and value inputed." << std::endl;
+}
+
+void XMLTree::children(std::string xmlInfo) const // children <id>
+{
+	if (xmlInfo != "")
+	{
+		std::string idParam = xmlInfo.substr(0, xmlInfo.find(' '));
+		xmlInfo = xmlInfo.substr(xmlInfo.find(' ') + 1);
+		std::string keyParam = xmlInfo.substr(0, xmlInfo.find(' '));
+		std::string valueParam = xmlInfo.substr(xmlInfo.find(' ') + 1);
+
+		std::cout << "set_" << idParam << "_" << std::endl;
+		std::cout << "_" << keyParam << "_" << std::endl;
+		std::cout << "_" << valueParam << "_" << std::endl;
+
+		for (const Node* node : listOfNodes)
+			if (node->id == idParam) // xmlInfo.substr(0)
+			{
+				for (Key* key : node->keys)
+					if (key->name == keyParam) // xmlInfo.substr(0)
+					{
+						std::cout << "> Value '" << key->value;
+						key->value = valueParam;
+						std::cout << "' successfully changed to: " << key->value << std::endl << std::endl;
+
+						return;
+					}
+
+				break;
+			}
+
+		std::cout << "> The id is wrong or the key doesn't exist." << std::endl;
+	}
+	else
+		std::cout << "> No id, key and value inputed." << std::endl;
 }

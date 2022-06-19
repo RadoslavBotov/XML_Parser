@@ -24,7 +24,7 @@
     <ClCompile Include="XMLTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Element.cpp">
+    <ClCompile Include="Key.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,7 +35,7 @@
     <ClInclude Include="XMLTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Element.h">
+    <ClInclude Include="Key.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

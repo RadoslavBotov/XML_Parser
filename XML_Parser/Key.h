@@ -2,12 +2,12 @@
 #include<string>
 #include<vector>
 
-struct Element
+struct Key
 {
 public:
-	Element(std::string nameParam, std::string contentsParam);
+	Key(std::string nameParam, std::string valueParam);
 
 // variables / fields
 	std::string name;
-	std::string contents;
+	std::string value;
 };

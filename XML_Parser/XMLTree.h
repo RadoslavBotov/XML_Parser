@@ -28,4 +28,8 @@ private:
 	void save(const bool fileOpenParam, const std::string fileNameParam, bool command = true) const;
 	void closeFile(bool& fileOpenParam, const std::string fileNameParam);
 	void printHelp() const;
+
+	void select(std::string xmlInfo) const;
+	void set(std::string xmlInfo, bool& changesMade) const;
+	void children(std::string xmlInfo) const;
 };

@@ -9,9 +9,9 @@
 //	depth = 0;
 //}
 
-Node::Node(std::string keyParam, const Node* parentParam)
+Node::Node(std::string nameParam, const Node* parentParam)
 {
-	key = keyParam;
+	name = nameParam;
 	parent = parentParam;
 
 	(parent == nullptr) ? id = "root_id" : id = parent->id + "_";
@@ -23,7 +23,7 @@ Node::Node(std::string keyParam, const Node* parentParam)
 
 Node::Node(const Node& source)
 {
-	key = source.key;
+	name = source.name;
 	parent = source.parent;
 
 	(parent == nullptr) ? id = "root_id" : id = parent->id + "_";
@@ -32,8 +32,8 @@ Node::Node(const Node& source)
 	for (Node* child : source.children)
 		children.push_back(new Node(*child));
 
-	for (Element* el : source.elements)
-		elements.push_back(new Element(*el));
+	for (Key* el : source.keys)
+		keys.push_back(new Key(*el));
 }
 
 Node& Node::operator = (const Node& source)
@@ -42,7 +42,7 @@ Node& Node::operator = (const Node& source)
 	{
 		freeMemory();
 
-		key = source.key;
+		name = source.name;
 		parent = source.parent;
 
 		(parent == nullptr) ? id = "root_id" : id = parent->id + "_";
@@ -51,8 +51,8 @@ Node& Node::operator = (const Node& source)
 		for (Node* child : source.children)
 			children.push_back(new Node(*child));
 
-		for (Element* el : source.elements)
-			elements.push_back(new Element(*el));
+		for (Key* el : source.keys)
+			keys.push_back(new Key(*el));
 	}
 	return *this;
 }
@@ -83,22 +83,22 @@ void Node::addNode(const Node& source)
 
 void Node::addElement(const std::string name, const std::string contents)
 {
-	elements.push_back(new Element(name, contents));
+	keys.push_back(new Key(name, contents));
 }
 
 void Node::freeMemory()
 {
 	id = "0";
-	key = "";
+	name = "";
 	parent = nullptr;
 
 	for (Node* child : children)
 		delete child;
 	children.clear();
 
-	for (Element* el : elements)
+	for (Key* el : keys)
 		delete el;
-	elements.clear();
+	keys.clear();
 }
 
 const std::string Node::getKey(std::string buffer, char symbol)
@@ -115,19 +115,19 @@ void Node::printIndent(std::ostream& os, short offSet) const
 std::ostream& operator << (std::ostream& os, const Node& source)
 {
 	source.printIndent(os);
-	os << "<" << source.key << " id=\"" << source.id << "\">" << std::endl;
+	os << "<" << source.name << " id=\"" << source.id << "\">" << std::endl;
 
-	for (Element* el : source.elements)
+	for (Key* el : source.keys)
 	{
 		source.printIndent(os, 1);
-		os << "<" << el->name << ">" << el->contents << "</" << el->name << ">" << std::endl;
+		os << "<" << el->name << ">" << el->value << "</" << el->name << ">" << std::endl;
 	}
 
 	for (Node* child : source.children)
 		os << *child;
 
 	source.printIndent(os);
-	os << "</" << source.key << ">" << std::endl;
+	os << "</" << source.name << ">" << std::endl;
 
 	return os;
 }
@@ -155,14 +155,14 @@ std::istream& operator >> (std::istream& is, Node& source)
 		getline(is, buffer, '\n');	// get the rest of the line in the document
 		if (buffer.find("id") != -1)	// we check if it has id and if true:
 		{
-			source.key = source.getKey(buffer, ' ');	// we set the key of current node before we get id 
+			source.name = source.getKey(buffer, ' ');	// we set the key of current node before we get id 
 
 			size_t index = buffer.find('\"') + 1;	// as we know there is an id, we get the position of the opening \"
 			helper1 = buffer.substr(index, buffer.find('\"', index) - index);	// a little math to find length of id
 			source.id = helper1;									// set id 
 		}
 		else
-			source.key = source.getKey(buffer, '>');
+			source.name = source.getKey(buffer, '>');
 	}
 
 	while (is) // while file hasn't ended
