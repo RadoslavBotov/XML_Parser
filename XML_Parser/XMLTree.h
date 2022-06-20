@@ -17,7 +17,7 @@ public:
 private:
 	Node* root;
 	std::vector <Node*> listOfNodes; // we will use this to skip using DFS every time we need to change nodes of tree	
-	
+	// it can create problems when using copy constructor and operator = but its handled
 	static std::vector <std::string> commandLines;
 	static size_t internalId;
 
@@ -27,7 +27,7 @@ private:
 	short getIndexOfCommand(const char command[9]);
 	void getFileName(std::string& fileNameParam, const char* userInput, short commandSize) const;
 	void getXMLInfo(std::string& xmlInfo, const char* userInput, short commandSize) const;
-	void getNodesDFS(Node* currentNode);
+	void getNodesDFS(Node* currentNode, std::vector <Node*>& listOfNodesParam);
 
 	void open(bool& fileOpenParam, const std::string fileNameParam);
 	void save(const bool fileOpenParam, const std::string fileNameParam, bool command = true) const;

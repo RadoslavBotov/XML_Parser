@@ -13,7 +13,8 @@ XMLTree::XMLTree()
 
 XMLTree::XMLTree(const XMLTree& source)
 {
-	root = new Node(*source.root);
+	root = new Node(*source.root); // deep copy of tree -> new pointers
+	getNodesDFS(root, listOfNodes); // now we can safely get a list of pointers to nodes of tree with sharing them with source
 }
 
 XMLTree& XMLTree::operator=(const XMLTree& source)
@@ -23,6 +24,7 @@ XMLTree& XMLTree::operator=(const XMLTree& source)
 		delete root;
 
 		root = new Node(*source.root);
+		getNodesDFS(root, listOfNodes);
 	}
 	return *this;
 }
@@ -119,16 +121,38 @@ void XMLTree::runProgram()
 		switch (indexOfCommand)	// get the command index the user inputs
 		{
 		case 0:	// open <file> is index 0
-			open(fileOpen, fileName);
+			open(fileOpen, fileName); // read file
 			if (fileOpen)
 			{
-				getNodesDFS(root);
+				getNodesDFS(root, listOfNodes); // get nodes and fix matching ids or give out internal ids if not present
 				
-				for (Node* node : listOfNodes)
+				size_t maxId = internalId;	// we will find the biggest id in the tree, should be 0 at start
+				size_t numberId = 0;		// convert ids to size_t for easier comparison
+
+				for (Node* node : listOfNodes) // go through all nodes and attributes(keys) and find biggest id
 				{
-					std::cout << node->name << " " << node->id << std::endl;
-					for(Key* key : node->keys)
-						std::cout << "    " << key->name << " " << key->id << std::endl;
+					numberId = to_size_t(node->id);
+					if (numberId > maxId)
+						maxId = numberId;
+
+					for (Key* key : node->keys)
+					{
+						numberId = to_size_t(key->id);
+						if (numberId > maxId)
+							maxId = numberId;
+					}
+				}
+
+				internalId = ++maxId;
+
+				for (Node* node : listOfNodes) // go through all nodes and attributes(keys) and find biggest id
+				{
+					if (node->id == "")
+						node->id = std::to_string(internalId++);
+
+					for (Key* key : node->keys)
+						if (key->id == "")
+							key->id = std::to_string(internalId++);
 				}
 			}
 			break;
@@ -252,16 +276,16 @@ void XMLTree::runProgram()
 				std::cout << "> No file is opened." << std::endl << std::endl;
 			break;
 
-		//case 14: // xpath <id> <XPath>
-		//	if (fileOpen)
-		//		select(xmlInfo);
-		//	else
-		//		std::cout << "> No file is opened." << std::endl << std::endl;
-		//	break;
+		case 14: // xpath <id> <XPath>
+			//if (fileOpen)
+				std::cout << "> Xpath commands not supported." << std::endl << std::endl;
+			//else
+				//std::cout << "> No file is opened." << std::endl << std::endl;
+			break;
 
-		case 15: // newattr <id> <key> <value>
-			if (fileOpen)
-				newattr(xmlInfo, changesMade);
+		case 15: // newattr <id> <key> <value> ; custom command as my structure is not accurate to normal xml tree and
+			if (fileOpen)	// it treats elements and attributes a little differently (different structures)
+				newattr(xmlInfo, changesMade); // we can't add attributes without this command
 			else
 				std::cout << "> No file is opened." << std::endl << std::endl;
 			break;
@@ -341,13 +365,13 @@ void XMLTree::getXMLInfo(std::string& xmlInfo, const char* userInput, short comm
 	xmlInfo = tempBuffer;																 // further work in runProgram
 }
 
-void XMLTree::getNodesDFS(Node* currentNode)
+void XMLTree::getNodesDFS(Node* currentNode, std::vector <Node*>& listOfNodesParam)
 {	
 	size_t index = 0;
-	listOfNodes.push_back(currentNode);
+	listOfNodesParam.push_back(currentNode);
 
 	while (index < currentNode->children.size())
-		getNodesDFS(currentNode->children[index++]);
+		getNodesDFS(currentNode->children[index++], listOfNodesParam);
 
 	return;
 }
@@ -462,7 +486,7 @@ void XMLTree::printHelp() const
 	std::cout << "text <id> ------------------- access to an elements text\n";				// 11
 	std::cout << "delete <id> <key> ----------- deletes an attribute of an element\n";		// 12
 	std::cout << "newchild <id> --------------- adds a new child to element\n";				// 13
-	std::cout << "xpath <id> <XPath> ---------- simple xpath operations\n";					// 14
+	//std::cout << "xpath <id> <XPath> ---------- simple xpath operations\n";					// 14 doesn't support xpath
 	std::cout << "newattr <id> <key> <value> -- adds a new attribute to a node\n\n";		// 15
 }
 
@@ -691,7 +715,8 @@ void XMLTree::newchild(std::string xmlInfo, bool& changesMade) // newchild <id>
 			if (node->id == idParam)
 			{
 				changesMade = true;
-
+				
+				// we give it name blank so we can later change it more easily
 				Node* newNode = new Node("blank", node, std::to_string(internalId++));
 				listOfNodes.push_back(newNode);
 				node->children.push_back(newNode);

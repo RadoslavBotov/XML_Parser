@@ -45,5 +45,4 @@ private: // internal functions
 	void freeMemory();
 
 	const std::string getKey(std::string buffer, char symbol);
-	//std::string getKey(std::string& buffer) const;
 };

@@ -11,7 +11,7 @@ Node::Node(std::string nameParam, Node* parentParam, std::string idParam)
 	else // if parent isn't nullptr
 		if (idParam != "") // we check if we have a custom id
 			id = idParam;
-		else id = "blank_id";	// else we set a default id
+		else id = "";	// else we set a default id
 
 	(parent == nullptr) ? depth = 0 : depth = parent->depth + 1;
 
@@ -28,7 +28,7 @@ Node::Node(const Node& source)
 	else // if parent isn't nullptr
 		if (source.id != "") // we check if we have a custom id
 			id = source.id;
-		else id = "blank_id";	// else we set a default id
+		else id = "";	// else we set a default id
 
 	(parent == nullptr) ? depth = 0 : depth = parent->depth + 1;
 	
@@ -53,7 +53,7 @@ Node& Node::operator = (const Node& source)
 		else // if parent isn't nullptr
 			if (source.id != "") // we check if we have a custom id
 				id = source.id;
-			else id = "blank_id";	// else we set a default id
+			else id = "";	// else we set a default id
 
 		(parent == nullptr) ? depth = 0 : depth = parent->depth + 1;
 
