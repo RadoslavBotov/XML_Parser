@@ -154,6 +154,25 @@ void XMLTree::runProgram()
 						if (key->id == "")
 							key->id = std::to_string(internalId++);
 				}
+
+				// check for matching ids and give a unique id according
+				for (Node* node : listOfNodes)  // just works :), goes through all nodes in lisfOfNodes
+				{	
+					for (Node* comp : listOfNodes) // for one node, goes through all nodes again
+					{
+						for (Key* key : node->keys) // compare id between node and keys(attribute) of different nodes
+							if (node->id == key->id)
+								key->id = std::to_string(internalId++);
+
+						if (node->id == comp->id) //  compare id between node and node(attribute)
+							comp->id = std::to_string(internalId++);
+					}
+
+					for(Key* key : node->keys) // compare id between node and keys(attribute) of same node
+						if (node->id == key->id)
+							key->id = std::to_string(internalId++);
+				}
+						
 			}
 			break;
 

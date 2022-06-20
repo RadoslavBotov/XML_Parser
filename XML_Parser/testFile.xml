@@ -1,19 +1,19 @@
 <people id="0">
-  <name id="1">ALL_PEOPLE</name>
-  <person id="2_0">
+  <name id="0">ALL_PEOPLE</name>
+  <person id="0">
     <address>USA</address>
-    <dog id="0_3">
+    <dog id="0">
       <name>Blacky</name>
       <age>5</age>
       <gender>male</gender>
     </dog>
   </person>
-  <person id="4q2">
-    <name id="5">Greg Pauling</name>
+  <person id="0">
+    <name id="0">Greg Pauling</name>
     <address>Austria</address>
   </person>
-  <person id="6">
-    <name id=".1!1">Radoslav Botov</name>
+  <person id="0">
+    <name id="0">Radoslav Botov</name>
     <address>Bulgaria</address>
   </person>
 </people>
