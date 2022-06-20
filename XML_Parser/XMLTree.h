@@ -32,10 +32,10 @@ private:
 	void printHelp() const;
 
 	void select(std::string xmlInfo) const;
-	void set(std::string xmlInfo, bool& changesMade) const;
+	void set(std::string xmlInfo, bool& changesMade);
 	void children(std::string xmlInfo) const;
 	void child(std::string xmlInfo) const;
 	void text(std::string xmlInfo) const;
-	void deleteIdKey(std::string xmlInfo, bool& changesMade) const;
+	void deleteIdKey(std::string xmlInfo, bool& changesMade);
 	void newchild(std::string xmlInfo) const;
 };

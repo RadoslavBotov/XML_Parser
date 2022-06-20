@@ -1,7 +1,8 @@
 <people id="root_id">
+  <name>ALL_PEOPLE</name>
   <person id="1">
     <address>USA</address>
-    <dog id="">
+    <dog id="5">
       <name>Blacky</name>
       <age>5</age>
       <gender>male</gender>

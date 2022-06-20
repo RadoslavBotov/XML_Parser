@@ -267,7 +267,7 @@ void XMLTree::runProgram()
 		//	break;
 
 		default: //  if getIndexOfCommand(userInput) has returned -1 -> invalid command
-			std::cout << "> Invalid command. Index: " << indexOfCommand <<std::endl << std::endl;
+			//std::cout << "> " << userInput << ": command not found" << indexOfCommand <<std::endl << std::endl;
 			break;
 		}
 	}
@@ -461,7 +461,7 @@ void XMLTree::select(std::string xmlInfo) const // select <id> <key>
 		std::cout<< "> No id and key inputed." << std::endl;
 }
 
-void XMLTree::set(std::string xmlInfo, bool& changesMade) const  // set <id> <key> <value>
+void XMLTree::set(std::string xmlInfo, bool& changesMade)  // set <id> <key> <value>
 {
 	if (xmlInfo != "")
 	{
@@ -470,23 +470,31 @@ void XMLTree::set(std::string xmlInfo, bool& changesMade) const  // set <id> <ke
 		std::string keyParam = xmlInfo.substr(0, xmlInfo.find(' '));
 		std::string valueParam = xmlInfo.substr(xmlInfo.find(' ') + 1);
 
-		for (const Node* node : listOfNodes)
-			if (node->id == idParam)
+		for (Node* node : listOfNodes)
+		{
+			for (Key* key : node->keys)
+				if (key->name == keyParam)
+				{
+					changesMade = true;
+
+					std::cout << "> Value '" << key->value;
+					key->value = valueParam;
+					std::cout << "' successfully changed to: " << key->value << std::endl << std::endl;
+
+					return;
+				}
+
+			if (node->id == idParam && node->name == keyParam)
 			{
-				for (Key* key : node->keys)
-					if (key->name == keyParam)
-					{
-						changesMade = true;
+				changesMade = true;
 
-						std::cout << "> Value '" << key->value;
-						key->value = valueParam;
-						std::cout << "' successfully changed to: " << key->value << std::endl << std::endl;
+				std::cout << "> Value '" << node->name;
+				node->name = valueParam;
+				std::cout << "' successfully changed to: " << node->name << std::endl << std::endl;
 
-						return;
-					}
-
-				break;
+				return;
 			}
+		}
 
 		std::cout << "> The id is wrong or the key doesn't exist." << std::endl;
 	}
@@ -503,9 +511,11 @@ void XMLTree::children(std::string xmlInfo) const // children <id>
 		for (const Node* node : listOfNodes)
 			if (node->id == idParam)
 			{
+				std::cout << "> Attributes:" << std::endl;
 				for (Key* key : node->keys)	// not sure which is wanted for children -> keys or children of node with inputed id
 					std::cout << *key << std::endl;
 
+				std::cout << "> Children nodes:" << std::endl;
 				for (Node* child : node->children)	// so i added both
 					std::cout << child->name << " id=\"" << child->id <<"\"" << std::endl;
 
@@ -525,11 +535,22 @@ void XMLTree::child(std::string xmlInfo) const // child <id> <n>
 	if (xmlInfo != "")
 	{
 		std::string idParam = xmlInfo.substr(0, xmlInfo.find(' '));
+		std::string n = xmlInfo.substr(xmlInfo.find(' ') + 1);
 
 		for (const Node* node : listOfNodes)
 			if (node->id == idParam)
 			{
-				std::cout << "> child" << std::endl << std::endl;
+				size_t index = 0;
+				size_t i = 0;
+
+				while (n.size() > i)						// convert n to a size_t value so we can compare it
+					index = index * 10 + (n[i++] - '0');
+
+				if (node->children.size() > index)
+					std::cout << node->children[index]->name << " id='" << node->children[index]->id << "'" << std::endl << std::endl;
+				else
+					std::cout << "> Element '" << node->name << "' has no child with index: " << index << std::endl << std::endl;
+
 				return;
 			}
 
@@ -567,7 +588,7 @@ void XMLTree::text(std::string xmlInfo) const // text <id>
 		std::cout << "> No id and index inputed." << std::endl << std::endl;
 }
 
-void XMLTree::deleteIdKey(std::string xmlInfo, bool& changesMade) const // delete <id> <key>
+void XMLTree::deleteIdKey(std::string xmlInfo, bool& changesMade) // delete <id> <key>
 {
 	if (xmlInfo != "")
 	{
