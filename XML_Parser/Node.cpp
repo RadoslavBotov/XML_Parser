@@ -1,14 +1,6 @@
 #include "Node.h"
 #include<iostream>
 
-//Node::Node()
-//{
-//	id = "root_id";
-//	key = "root_key";
-//	parent = nullptr;
-//	depth = 0;
-//}
-
 Node::Node(std::string nameParam, const Node* parentParam)
 {
 	name = nameParam;
@@ -117,10 +109,10 @@ std::ostream& operator << (std::ostream& os, const Node& source)
 	source.printIndent(os);
 	os << "<" << source.name << " id=\"" << source.id << "\">" << std::endl;
 
-	for (Key* el : source.keys)
+	for (Key* key : source.keys)
 	{
 		source.printIndent(os, 1);
-		os << "<" << el->name << ">" << el->value << "</" << el->name << ">" << std::endl;
+		os << *key << std::endl;
 	}
 
 	for (Node* child : source.children)
