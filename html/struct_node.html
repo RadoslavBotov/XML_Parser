@@ -105,9 +105,9 @@ $(document).ready(function(){initNavTree('struct_node.html',''); initResizable()
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a059e192a74cdbe61a8cf77c83a44e3c7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#a059e192a74cdbe61a8cf77c83a44e3c7">Node</a> (std::string keyParam, const <a class="el" href="struct_node.html">Node</a> *parentParam)</td></tr>
-<tr class="memdesc:a059e192a74cdbe61a8cf77c83a44e3c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with parameters.  <a href="struct_node.html#a059e192a74cdbe61a8cf77c83a44e3c7">More...</a><br /></td></tr>
-<tr class="separator:a059e192a74cdbe61a8cf77c83a44e3c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8b2f5cfdc26bc579d1ca86049374937"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#aa8b2f5cfdc26bc579d1ca86049374937">Node</a> (std::string nameParam, <a class="el" href="struct_node.html">Node</a> *parentParam, std::string idParam=&quot;&quot;)</td></tr>
+<tr class="memdesc:aa8b2f5cfdc26bc579d1ca86049374937"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with parameters.  <a href="struct_node.html#aa8b2f5cfdc26bc579d1ca86049374937">More...</a><br /></td></tr>
+<tr class="separator:aa8b2f5cfdc26bc579d1ca86049374937"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad48694bf1737e15c63a4b34f909dea3b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#ad48694bf1737e15c63a4b34f909dea3b">Node</a> (const <a class="el" href="struct_node.html">Node</a> &amp;source)</td></tr>
 <tr class="memdesc:ad48694bf1737e15c63a4b34f909dea3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="struct_node.html#ad48694bf1737e15c63a4b34f909dea3b">More...</a><br /></td></tr>
 <tr class="separator:ad48694bf1737e15c63a4b34f909dea3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,45 +117,61 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa0840c3cb5c7159be6d992adecd2097c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#aa0840c3cb5c7159be6d992adecd2097c">~Node</a> ()</td></tr>
 <tr class="memdesc:aa0840c3cb5c7159be6d992adecd2097c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="struct_node.html#aa0840c3cb5c7159be6d992adecd2097c">More...</a><br /></td></tr>
 <tr class="separator:aa0840c3cb5c7159be6d992adecd2097c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a183485e421bcabcb49e736317c259264"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#a183485e421bcabcb49e736317c259264">addNode</a> (std::string keyParam)</td></tr>
-<tr class="separator:a183485e421bcabcb49e736317c259264"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae73fa0977e7622913c7c4626550c68c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#ae73fa0977e7622913c7c4626550c68c8">addNode</a> (std::string nameParam)</td></tr>
+<tr class="memdesc:ae73fa0977e7622913c7c4626550c68c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add node.  <a href="struct_node.html#ae73fa0977e7622913c7c4626550c68c8">More...</a><br /></td></tr>
+<tr class="separator:ae73fa0977e7622913c7c4626550c68c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1f6339380981b55f9c1ef42005dd1c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#ad1f6339380981b55f9c1ef42005dd1c5">addNode</a> (const <a class="el" href="struct_node.html">Node</a> &amp;source)</td></tr>
+<tr class="memdesc:ad1f6339380981b55f9c1ef42005dd1c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add node.  <a href="struct_node.html#ad1f6339380981b55f9c1ef42005dd1c5">More...</a><br /></td></tr>
 <tr class="separator:ad1f6339380981b55f9c1ef42005dd1c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abae9dcd43b2cff6e3188023b2c1284cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#abae9dcd43b2cff6e3188023b2c1284cd">addElement</a> (const std::string name, const std::string contents)</td></tr>
-<tr class="separator:abae9dcd43b2cff6e3188023b2c1284cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1cf738cc85fa2c35c3acb5f00bc687f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#ad1cf738cc85fa2c35c3acb5f00bc687f">print</a> (std::ostream &amp;os, bool printChildren=true) const</td></tr>
-<tr class="separator:ad1cf738cc85fa2c35c3acb5f00bc687f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60891ae05a29d494fe16ec167f730322"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#a60891ae05a29d494fe16ec167f730322">addElement</a> (const std::string <a class="el" href="struct_node.html#aa829edc37a2c92dacdab95bcef248175">name</a>, const std::string value, const std::string <a class="el" href="struct_node.html#a32cfa58c68050777fb9cb77ea5552f58">id</a>)</td></tr>
+<tr class="memdesc:a60891ae05a29d494fe16ec167f730322"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add element.  <a href="struct_node.html#a60891ae05a29d494fe16ec167f730322">More...</a><br /></td></tr>
+<tr class="separator:a60891ae05a29d494fe16ec167f730322"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a32cfa58c68050777fb9cb77ea5552f58"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#a32cfa58c68050777fb9cb77ea5552f58">id</a></td></tr>
+<tr class="memdesc:a32cfa58c68050777fb9cb77ea5552f58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unique id.  <a href="struct_node.html#a32cfa58c68050777fb9cb77ea5552f58">More...</a><br /></td></tr>
 <tr class="separator:a32cfa58c68050777fb9cb77ea5552f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1afcb3b044a352038a4d4e480c075067"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#a1afcb3b044a352038a4d4e480c075067">key</a></td></tr>
-<tr class="separator:a1afcb3b044a352038a4d4e480c075067"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa829edc37a2c92dacdab95bcef248175"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#aa829edc37a2c92dacdab95bcef248175">name</a></td></tr>
+<tr class="memdesc:aa829edc37a2c92dacdab95bcef248175"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of node.  <a href="struct_node.html#aa829edc37a2c92dacdab95bcef248175">More...</a><br /></td></tr>
+<tr class="separator:aa829edc37a2c92dacdab95bcef248175"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49baf1d613dc14f1e1e4aad883dde6fe"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="struct_node.html">Node</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#a49baf1d613dc14f1e1e4aad883dde6fe">children</a></td></tr>
+<tr class="memdesc:a49baf1d613dc14f1e1e4aad883dde6fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Children of node.  <a href="struct_node.html#a49baf1d613dc14f1e1e4aad883dde6fe">More...</a><br /></td></tr>
 <tr class="separator:a49baf1d613dc14f1e1e4aad883dde6fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acda746e7c0b7602d28f6faac8cf5ab20"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="struct_element.html">Element</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#acda746e7c0b7602d28f6faac8cf5ab20">elements</a></td></tr>
-<tr class="separator:acda746e7c0b7602d28f6faac8cf5ab20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add2dcf79e01b90597b9cd25d383de251"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#add2dcf79e01b90597b9cd25d383de251">parent</a></td></tr>
-<tr class="separator:add2dcf79e01b90597b9cd25d383de251"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83fe2c405234b3386d40a12b3dab182a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="struct_key.html">Key</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#a83fe2c405234b3386d40a12b3dab182a">keys</a></td></tr>
+<tr class="memdesc:a83fe2c405234b3386d40a12b3dab182a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keys/Attributes.  <a href="struct_node.html#a83fe2c405234b3386d40a12b3dab182a">More...</a><br /></td></tr>
+<tr class="separator:a83fe2c405234b3386d40a12b3dab182a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8184598cdea70e4bbdfd76f2b0f9e85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#ad8184598cdea70e4bbdfd76f2b0f9e85">parent</a></td></tr>
+<tr class="memdesc:ad8184598cdea70e4bbdfd76f2b0f9e85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parent pointer.  <a href="struct_node.html#ad8184598cdea70e4bbdfd76f2b0f9e85">More...</a><br /></td></tr>
+<tr class="separator:ad8184598cdea70e4bbdfd76f2b0f9e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adea87b03d8fe6f9165761058bc9ae926"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#adea87b03d8fe6f9165761058bc9ae926">depth</a></td></tr>
+<tr class="memdesc:adea87b03d8fe6f9165761058bc9ae926"><td class="mdescLeft">&#160;</td><td class="mdescRight">Depth of node in tree structure.  <a href="struct_node.html#adea87b03d8fe6f9165761058bc9ae926">More...</a><br /></td></tr>
 <tr class="separator:adea87b03d8fe6f9165761058bc9ae926"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:ad48f92c9f623843ff3044a7e92859020"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#ad48f92c9f623843ff3044a7e92859020">printIndent</a> (std::ostream &amp;os, short offSet=0) const</td></tr>
+<tr class="memdesc:ad48f92c9f623843ff3044a7e92859020"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints indent based on depth.  <a href="struct_node.html#ad48f92c9f623843ff3044a7e92859020">More...</a><br /></td></tr>
 <tr class="separator:ad48f92c9f623843ff3044a7e92859020"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c3f34d462c10f8def49fdce76b8171d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#a4c3f34d462c10f8def49fdce76b8171d">freeMemory</a> ()</td></tr>
+<tr class="memdesc:a4c3f34d462c10f8def49fdce76b8171d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees memory of vectors.  <a href="struct_node.html#a4c3f34d462c10f8def49fdce76b8171d">More...</a><br /></td></tr>
 <tr class="separator:a4c3f34d462c10f8def49fdce76b8171d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a373806bb925470d762008786aabd549e"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#a373806bb925470d762008786aabd549e">getKey</a> (std::string buffer, char symbol)</td></tr>
+<tr class="memdesc:a373806bb925470d762008786aabd549e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get name of key.  <a href="struct_node.html#a373806bb925470d762008786aabd549e">More...</a><br /></td></tr>
+<tr class="separator:a373806bb925470d762008786aabd549e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
 <tr class="memitem:a4d41d997c418af3738a0a8fbed41c7a0"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#a4d41d997c418af3738a0a8fbed41c7a0">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="struct_node.html">Node</a> &amp;source)</td></tr>
+<tr class="memdesc:a4d41d997c418af3738a0a8fbed41c7a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operator &lt;&lt;.  <a href="struct_node.html#a4d41d997c418af3738a0a8fbed41c7a0">More...</a><br /></td></tr>
 <tr class="separator:a4d41d997c418af3738a0a8fbed41c7a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9c4d408ec39a232215ced2cbf2b3761"><td class="memItemLeft" align="right" valign="top">std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_node.html#ad9c4d408ec39a232215ced2cbf2b3761">operator&gt;&gt;</a> (std::istream &amp;is, <a class="el" href="struct_node.html">Node</a> &amp;source)</td></tr>
+<tr class="memdesc:ad9c4d408ec39a232215ced2cbf2b3761"><td class="mdescLeft">&#160;</td><td class="mdescRight">Operator &gt;&gt;.  <a href="struct_node.html#ad9c4d408ec39a232215ced2cbf2b3761">More...</a><br /></td></tr>
+<tr class="separator:ad9c4d408ec39a232215ced2cbf2b3761"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a059e192a74cdbe61a8cf77c83a44e3c7" name="a059e192a74cdbe61a8cf77c83a44e3c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a059e192a74cdbe61a8cf77c83a44e3c7">&#9670;&nbsp;</a></span>Node() <span class="overload">[1/2]</span></h2>
+<a id="aa8b2f5cfdc26bc579d1ca86049374937" name="aa8b2f5cfdc26bc579d1ca86049374937"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8b2f5cfdc26bc579d1ca86049374937">&#9670;&nbsp;</a></span>Node() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -164,13 +180,19 @@ Friends</h2></td></tr>
           <td class="memname">Node::Node </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>keyParam</em>, </td>
+          <td class="paramname"><em>nameParam</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="struct_node.html">Node</a> *&#160;</td>
-          <td class="paramname"><em>parentParam</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="struct_node.html">Node</a> *&#160;</td>
+          <td class="paramname"><em>parentParam</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>idParam</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -181,7 +203,7 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Constructor with parameters. </p>
-<p >Parameters for key value and parent node pointer. </p>
+<p >Parameters for key, value and parent node pointer and id with default value "". </p>
 
 </div>
 </div>
@@ -221,13 +243,13 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Destructor. </p>
-<p >Uses <a class="el" href="struct_node.html#a4c3f34d462c10f8def49fdce76b8171d">freeMemory()</a> to clear. </p>
+<p >Uses <a class="el" href="struct_node.html#a4c3f34d462c10f8def49fdce76b8171d" title="Frees memory of vectors.">freeMemory()</a> to clear. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="abae9dcd43b2cff6e3188023b2c1284cd" name="abae9dcd43b2cff6e3188023b2c1284cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abae9dcd43b2cff6e3188023b2c1284cd">&#9670;&nbsp;</a></span>addElement()</h2>
+<a id="a60891ae05a29d494fe16ec167f730322" name="a60891ae05a29d494fe16ec167f730322"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60891ae05a29d494fe16ec167f730322">&#9670;&nbsp;</a></span>addElement()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -242,7 +264,13 @@ Friends</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string&#160;</td>
-          <td class="paramname"><em>contents</em>&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>id</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -251,6 +279,9 @@ Friends</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Add element. </p>
+<p >Adds an element to keys by creating a new Element based on name, value and id. </p>
 
 </div>
 </div>
@@ -270,10 +301,13 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Add node. </p>
+<p >Adds a node to children using copy constructor. </p>
+
 </div>
 </div>
-<a id="a183485e421bcabcb49e736317c259264" name="a183485e421bcabcb49e736317c259264"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a183485e421bcabcb49e736317c259264">&#9670;&nbsp;</a></span>addNode() <span class="overload">[2/2]</span></h2>
+<a id="ae73fa0977e7622913c7c4626550c68c8" name="ae73fa0977e7622913c7c4626550c68c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae73fa0977e7622913c7c4626550c68c8">&#9670;&nbsp;</a></span>addNode() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -282,11 +316,14 @@ Friends</h2></td></tr>
           <td class="memname">void Node::addNode </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>keyParam</em></td><td>)</td>
+          <td class="paramname"><em>nameParam</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Add node. </p>
+<p >Adds a node to children by creating a new node based on nameParam. </p>
 
 </div>
 </div>
@@ -313,6 +350,48 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Frees memory of vectors. </p>
+<p >As std::vector::clear() doesn't automatically delete the memory a pointer is pointing at, we have to do so ourselves. </p>
+
+</div>
+</div>
+<a id="a373806bb925470d762008786aabd549e" name="a373806bb925470d762008786aabd549e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a373806bb925470d762008786aabd549e">&#9670;&nbsp;</a></span>getKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string Node::getKey </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>symbol</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get name of key. </p>
+<p >Returns a substring of buffer from position 0 to the given symbol. </p>
+
 </div>
 </div>
 <a id="a7c8b0f5b798d102e2e3748d7100f6a4c" name="a7c8b0f5b798d102e2e3748d7100f6a4c"></a>
@@ -332,34 +411,6 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Operator =. </p>
-
-</div>
-</div>
-<a id="ad1cf738cc85fa2c35c3acb5f00bc687f" name="ad1cf738cc85fa2c35c3acb5f00bc687f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1cf738cc85fa2c35c3acb5f00bc687f">&#9670;&nbsp;</a></span>print()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Node::print </td>
-          <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>os</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>printChildren</em> = <code>true</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
 </div>
 </div>
@@ -396,6 +447,9 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Prints indent based on depth. </p>
+<p >Prints indent based on this-&gt;depth to a gives os stream. OffSet is used to print an additionl 4 spaces when we are printing attributes as they don't have a depth of their own. </p>
 
 </div>
 </div>
@@ -434,6 +488,47 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Operator &lt;&lt;. </p>
+
+</div>
+</div>
+<a id="ad9c4d408ec39a232215ced2cbf2b3761" name="ad9c4d408ec39a232215ced2cbf2b3761"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9c4d408ec39a232215ced2cbf2b3761">&#9670;&nbsp;</a></span>operator&gt;&gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::istream &amp; operator&gt;&gt; </td>
+          <td>(</td>
+          <td class="paramtype">std::istream &amp;&#160;</td>
+          <td class="paramname"><em>is</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_node.html">Node</a> &amp;&#160;</td>
+          <td class="paramname"><em>source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Operator &gt;&gt;. </p>
+<p >Reads from a file, creating a tree structure with a root source. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -449,6 +544,9 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Children of node. </p>
+<p >A vector of pointers to other <a class="el" href="struct_node.html">Node</a> objects acting as children to this-&gt;node; </p>
+
 </div>
 </div>
 <a id="adea87b03d8fe6f9165761058bc9ae926" name="adea87b03d8fe6f9165761058bc9ae926"></a>
@@ -463,19 +561,8 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="acda746e7c0b7602d28f6faac8cf5ab20" name="acda746e7c0b7602d28f6faac8cf5ab20"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acda746e7c0b7602d28f6faac8cf5ab20">&#9670;&nbsp;</a></span>elements</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="struct_element.html">Element</a>*&gt; Node::elements</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>Depth of node in tree structure. </p>
+<p >A helper variable with which we determine the depth of this-&gt;node once and use for indention when writing to file. </p>
 
 </div>
 </div>
@@ -491,33 +578,57 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Unique id. </p>
+
 </div>
 </div>
-<a id="a1afcb3b044a352038a4d4e480c075067" name="a1afcb3b044a352038a4d4e480c075067"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1afcb3b044a352038a4d4e480c075067">&#9670;&nbsp;</a></span>key</h2>
+<a id="a83fe2c405234b3386d40a12b3dab182a" name="a83fe2c405234b3386d40a12b3dab182a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83fe2c405234b3386d40a12b3dab182a">&#9670;&nbsp;</a></span>keys</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string Node::key</td>
+          <td class="memname">std::vector&lt;<a class="el" href="struct_key.html">Key</a>*&gt; Node::keys</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
+<p>Keys/Attributes. </p>
+<p >A vector of pointers to <a class="el" href="struct_key.html">Key</a> objects acting as attributes of this-&gt;node; </p>
+
 </div>
 </div>
-<a id="add2dcf79e01b90597b9cd25d383de251" name="add2dcf79e01b90597b9cd25d383de251"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add2dcf79e01b90597b9cd25d383de251">&#9670;&nbsp;</a></span>parent</h2>
+<a id="aa829edc37a2c92dacdab95bcef248175" name="aa829edc37a2c92dacdab95bcef248175"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa829edc37a2c92dacdab95bcef248175">&#9670;&nbsp;</a></span>name</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="struct_node.html">Node</a>* Node::parent</td>
+          <td class="memname">std::string Node::name</td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Name of node. </p>
+
+</div>
+</div>
+<a id="ad8184598cdea70e4bbdfd76f2b0f9e85" name="ad8184598cdea70e4bbdfd76f2b0f9e85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8184598cdea70e4bbdfd76f2b0f9e85">&#9670;&nbsp;</a></span>parent</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_node.html">Node</a>* Node::parent</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parent pointer. </p>
+<p >A pointer to the parent <a class="el" href="struct_node.html">Node</a> of this-&gt;node. </p>
 
 </div>
 </div>

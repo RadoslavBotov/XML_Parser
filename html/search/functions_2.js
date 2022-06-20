@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['element_0',['Element',['../struct_element.html#a5857efbe999baf880b0345d5bf5ad9b7',1,'Element']]]
+  ['deleteidkey_0',['deleteIdKey',['../class_x_m_l_tree.html#a9e8de627c21472ebcb4fd33a4d5e5a41',1,'XMLTree']]]
 ];

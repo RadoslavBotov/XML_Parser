@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['_7enode_0',['~Node',['../struct_node.html#aa0840c3cb5c7159be6d992adecd2097c',1,'Node']]],
-  ['_7exmltree_1',['~XMLTree',['../class_x_m_l_tree.html#a92313bfc5530f9150ab345c2ca7cfca4',1,'XMLTree']]]
+  ['text_0',['text',['../class_x_m_l_tree.html#a4c1296660353a45656e096ab715dbee9',1,'XMLTree']]],
+  ['to_5fsize_5ft_1',['to_size_t',['../class_x_m_l_tree.html#a41807a3a7210b22d42c852d7aacfe4ed',1,'XMLTree']]]
 ];

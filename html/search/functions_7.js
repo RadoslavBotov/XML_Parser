@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['open_0',['open',['../class_x_m_l_tree.html#af3b3c806f292566ae8019733fb213fa6',1,'XMLTree']]],
-  ['operator_3c_3c_1',['operator&lt;&lt;',['../_node_8cpp.html#a4d41d997c418af3738a0a8fbed41c7a0',1,'Node.cpp']]],
-  ['operator_3d_2',['operator=',['../struct_node.html#a7c8b0f5b798d102e2e3748d7100f6a4c',1,'Node::operator=()'],['../class_x_m_l_tree.html#aec0f1c98f222ee43944cee9486f73052',1,'XMLTree::operator=()']]]
+  ['newattr_0',['newattr',['../class_x_m_l_tree.html#ab0f33eab6c556b1fb9cd953901314a34',1,'XMLTree']]],
+  ['newchild_1',['newchild',['../class_x_m_l_tree.html#ad33836d4aad3d3a2b63379e7838231f5',1,'XMLTree']]],
+  ['node_2',['Node',['../struct_node.html#aa8b2f5cfdc26bc579d1ca86049374937',1,'Node::Node(std::string nameParam, Node *parentParam, std::string idParam=&quot;&quot;)'],['../struct_node.html#ad48694bf1737e15c63a4b34f909dea3b',1,'Node::Node(const Node &amp;source)']]]
 ];

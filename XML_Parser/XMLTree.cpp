@@ -8,7 +8,7 @@ std::vector <std::string> XMLTree::commandLines = { "open", "close", "save" , "s
 
 XMLTree::XMLTree()
 {
-	root = new Node("root", nullptr);
+	root = new Node("root", nullptr, "root_id");
 }
 
 XMLTree::XMLTree(const XMLTree& source)
@@ -143,10 +143,10 @@ void XMLTree::runProgram()
 					}
 				}
 
-				internalId = ++maxId;
+				internalId = ++maxId; // set internalId to maxId + 1 and so each bigger internalId will be unique
 
-				for (Node* node : listOfNodes) // go through all nodes and attributes(keys) and find biggest id
-				{
+				for (Node* node : listOfNodes) // go through all nodes and attributes(keys) and set unique id
+				{							   // to nodes and keys(attributes) without ids'
 					if (node->id == "")
 						node->id = std::to_string(internalId++);
 
@@ -492,24 +492,24 @@ void XMLTree::printHelp() const
 
 void XMLTree::select(std::string xmlInfo) const // select <id> <key>
 {
-	if (xmlInfo != "")
-	{
-		std::string idParam = xmlInfo.substr(0, xmlInfo.find(' '));
-		std::string keyParam = xmlInfo.substr(xmlInfo.find(' ') + 1);
-
-		for (const Node* node : listOfNodes)
-			if (node->id == idParam)
+	if (xmlInfo != "") // check if xmlInfo has any info
+	{																	// seperate the id and key in xmlInfo
+		std::string idParam = xmlInfo.substr(0, xmlInfo.find(' '));		// id is from position 0 to the first occurance of ' '
+		std::string keyParam = xmlInfo.substr(xmlInfo.find(' ') + 1);	// key is the rest of string
+																		// its the same for the other xml commands
+		for (const Node* node : listOfNodes)	// go through all nodes is listOfNodes
+			if (node->id == idParam)			// check which node has an id matching the one from xmlInfo
 			{
-				for (const Key* key : node->keys)
-					if (key->name == keyParam)
-					{
+				for (const Key* key : node->keys)	// go through all key of each node
+					if (key->name == keyParam)		// and check for matching name of key
+					{								// print to console
 						std::cout << "> Value: " << key->value << std::endl << std::endl;
 						return;
 					}
 
 				break;
 			}
-
+		// if we havent found a match inform user
 		std::cout << "> The id is wrong or the key doesn't exist." << std::endl;
 	}
 	else
@@ -518,19 +518,19 @@ void XMLTree::select(std::string xmlInfo) const // select <id> <key>
 
 void XMLTree::set(std::string xmlInfo, bool& changesMade)  // set <id> <key> <value>
 {
-	if (xmlInfo != "")
+	if (xmlInfo != "") // check if xmlInfo has any info
 	{
-		std::string idParam = xmlInfo.substr(0, xmlInfo.find(' '));
-		xmlInfo = xmlInfo.substr(xmlInfo.find(' ') + 1);
-		std::string keyParam = xmlInfo.substr(0, xmlInfo.find(' '));
-		std::string valueParam = xmlInfo.substr(xmlInfo.find(' ') + 1);
+		std::string idParam = xmlInfo.substr(0, xmlInfo.find(' '));		// get id: from pos 0 to first ' '
+		xmlInfo = xmlInfo.substr(xmlInfo.find(' ') + 1);// as we already store id in idParam, we set xmlInfo to be from that first ' ' to the end of string
+		std::string keyParam = xmlInfo.substr(0, xmlInfo.find(' ')); // this way we ease key and value seperation as we now again have
+		std::string valueParam = xmlInfo.substr(xmlInfo.find(' ') + 1); // ' ' in 2 places instead of 3
 
-		for (Node* node : listOfNodes)
+		for (Node* node : listOfNodes) // // go through all nodes is listOfNodes
 		{
-			for (Key* key : node->keys)
-				if (key->name == keyParam)
+			for (Key* key : node->keys) // go through all key of each node
+				if (key->name == keyParam && key->id == idParam) // and check for matching name of key and id for Keys
 				{
-					changesMade = true;
+					changesMade = true; // say we have made changed to file for exit command
 
 					std::cout << "> Value '" << key->value;
 					key->value = valueParam;
@@ -539,9 +539,9 @@ void XMLTree::set(std::string xmlInfo, bool& changesMade)  // set <id> <key> <va
 					return;
 				}
 
-			if (node->id == idParam && node->name == keyParam)
+			if (node->id == idParam && node->name == keyParam) // check for matching name and id for Nodes
 			{
-				changesMade = true;
+				changesMade = true; // say we have made changed to file for exit command
 
 				std::cout << "> Value '" << node->name;
 				node->name = valueParam;
@@ -551,6 +551,7 @@ void XMLTree::set(std::string xmlInfo, bool& changesMade)  // set <id> <key> <va
 			}
 		}
 
+		// if no match was found inform user
 		std::cout << "> The id is wrong or the key doesn't exist." << std::endl;
 	}
 	else
@@ -563,11 +564,11 @@ void XMLTree::children(std::string xmlInfo) const // children <id>
 	{
 		std::string idParam = xmlInfo.substr(0, xmlInfo.find(' '));
 
-		for (const Node* node : listOfNodes)
-			if (node->id == idParam)
+		for (const Node* node : listOfNodes)	// go through all nodes is listOfNodes
+			if (node->id == idParam) // find a matching id from nodes; we don't look at keys as they cant have a child
 			{
 				std::cout << "> Attributes:" << std::endl;
-				for (Key* key : node->keys)	// not sure which is wanted for children -> keys or children of node with inputed id
+				for (Key* key : node->keys)	// not sure which is wanted for children -> keys or children of node
 					std::cout << *key << std::endl;
 
 				std::cout << "> Children nodes:" << std::endl;
@@ -584,7 +585,6 @@ void XMLTree::children(std::string xmlInfo) const // children <id>
 		std::cout << "> No id inputed." << std::endl << std::endl;
 }
 
-// TODO: working here
 void XMLTree::child(std::string xmlInfo) const // child <id> <n>
 {
 	if (xmlInfo != "")
@@ -594,7 +594,7 @@ void XMLTree::child(std::string xmlInfo) const // child <id> <n>
 
 		for (const Node* node : listOfNodes)
 			if (node->id == idParam)
-			{
+			{								 // as n is to be an index we
 				size_t index = to_size_t(n); // convert n to a size_t value so we can compare it
 
 				if (node->children.size() > index)
@@ -626,7 +626,7 @@ void XMLTree::text(std::string xmlInfo) const // text <id>
 					return;
 				}
 
-			if (node->id == idParam)
+			if (node->id == idParam) // check if nodes have a match too
 			{
 				std::cout << "> Text(name): " << node->name << std::endl << std::endl;
 				return;
@@ -649,11 +649,11 @@ void XMLTree::deleteIdKey(std::string xmlInfo, bool& changesMade) // delete <id>
 		size_t indexNode = 0;
 		for (Node* node : listOfNodes) // we go through all our nodes in the tree and check:
 		{
-			size_t indexKey = 0;
+			size_t indexKey = 0; // the index in node->keys of the key we want to delete
 			for (Key* key : node->keys) // if any key matches the id and keyName user has inputed
 				if (key->id == idParam && key->name == keyParam)
 				{
-					changesMade = true;
+					changesMade = true; // say we have made changed to the tree structure
 
 					size_t lastElement = node->keys.size() - 1; // find index of last element of node->keys
 					std::swap(node->keys[indexKey], node->keys[lastElement]); // swap element we want to delete and last element
@@ -661,35 +661,40 @@ void XMLTree::deleteIdKey(std::string xmlInfo, bool& changesMade) // delete <id>
 					delete node->keys[lastElement]; // delete last element
 					node->keys[lastElement] = nullptr; // and set it to nullptr
 					node->keys.pop_back(); // discard last element
+					// we do this because the std::vector::erase() function wasn't available to use and this method was 
+					// invented for that, one downside is that it changes the order of the elements in node->keys
 
 					std::cout << "> Successfully deleted '" << keyParam << "'." << std::endl << std::endl;
 					return;
-				}
+				} // if key doesn't match the id and keyName user has inputed, increase indexKey
 				else indexKey++;
 
-			if (node->id == idParam && node->name == keyParam)
-			{
+			if (node->id == idParam && node->name == keyParam) // same deals with nodes with one difference
+			{ // we have node pointers to the same place in two places in XMLTree: listOfNodes and the children vector of parent node
 				changesMade = true;
 
 				size_t lastElement = listOfNodes.size() - 1; // find index of last element of node->children
 				std::swap(listOfNodes[indexNode], listOfNodes [lastElement]); // swap element we want to delete and last element
 
-				Node* parentNode = listOfNodes[lastElement]->parent; // will need later
+				Node* parentNode = listOfNodes[lastElement]->parent; // will need later as to not break program
 
-				// we will delete the node from listOfNodes but there will be a nullptr somewhere in the structure of the tree
-				// thats why we got its parent node before deleting it and the index of the node in children of parent
+				// we will delete the node from listOfNodes but there will be a nullptr somewhere in the children vector of 
+				// parent node, thats why we got its parent node before deleting it and the index of the node in children of parent
 
-				indexNode = 0;
-				for (Node* child : parentNode->children) // we get the index of nullptr in children vector
+				indexNode = 0; // we can reuse indexNode from before as we have found our node in listOfNodes
+				for (Node* child : parentNode->children) // we get the index of node(the one we want to delete) in children vector
 					if (child == node)
-						break;
+						break; // if no match we increase indexNode
 					else indexNode++;
 
 				delete listOfNodes[lastElement]; // delete last element
 				listOfNodes[lastElement] = nullptr; // and set it to nullptr
-				listOfNodes.pop_back(); // discard last element
+				listOfNodes.pop_back(); // discard last element of listOfNodes
 
+				// we have handled listOfNodes and now the parents children vector
+				// we swap the node pointer we want to delete with the last pointer in vector
 				std::swap(parentNode->children[indexNode], parentNode->children[parentNode->children.size() - 1]);
+				// as we have already delete the memory its pointing to, we can just pop it from vector
 				parentNode->children.pop_back();
 
 				std::cout << "> Successfully deleted '" << keyParam << "'." << std::endl << std::endl;
@@ -716,10 +721,10 @@ void XMLTree::newchild(std::string xmlInfo, bool& changesMade) // newchild <id>
 			{
 				changesMade = true;
 				
-				// we give it name blank so we can later change it more easily
+				// we give it name blank so we can later change it more easily with set command
 				Node* newNode = new Node("blank", node, std::to_string(internalId++));
-				listOfNodes.push_back(newNode);
-				node->children.push_back(newNode);
+				listOfNodes.push_back(newNode); // add node to the listOfNodes vector
+				node->children.push_back(newNode); // and add it to the children vector of node with matching id
 
 				std::cout << "> Successfully added child to '" << node->name << "' with id='" << newNode->id << "'." << std::endl << std::endl;
 				return;
@@ -731,8 +736,10 @@ void XMLTree::newchild(std::string xmlInfo, bool& changesMade) // newchild <id>
 		std::cout << "> No id inputed." << std::endl << std::endl;
 }
 
-void XMLTree::newattr(std::string xmlInfo, bool& changesMade) // settext <id> <key> <value>
-{
+void XMLTree::newattr(std::string xmlInfo, bool& changesMade) // settext <id> <key> <value>, custom xml command
+{				
+	// Without this we can't add keys(attributes) to the tree as my code makes a distinction between the two and
+	// doesn't treat attributes as nodes. I realized this at the end and it was too much to change in the last day.
 	if (xmlInfo != "")
 	{
 		std::string idParam = xmlInfo.substr(0, xmlInfo.find(' '));

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['node_0',['Node',['../struct_node.html#a059e192a74cdbe61a8cf77c83a44e3c7',1,'Node::Node(std::string keyParam, const Node *parentParam)'],['../struct_node.html#ad48694bf1737e15c63a4b34f909dea3b',1,'Node::Node(const Node &amp;source)']]]
+  ['main_0',['main',['../_source_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'Source.cpp']]]
 ];

@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['element_0',['Element',['../struct_element.html',1,'Element'],['../struct_element.html#a5857efbe999baf880b0345d5bf5ad9b7',1,'Element::Element()']]],
-  ['element_2ecpp_1',['Element.cpp',['../_element_8cpp.html',1,'']]],
-  ['element_2eh_2',['Element.h',['../_element_8h.html',1,'']]],
-  ['elements_3',['elements',['../struct_node.html#acda746e7c0b7602d28f6faac8cf5ab20',1,'Node']]]
+  ['freememory_0',['freeMemory',['../struct_node.html#a4c3f34d462c10f8def49fdce76b8171d',1,'Node::freeMemory()'],['../class_x_m_l_tree.html#a3ec35c7302edaa37206b0c4eb2c4bc9d',1,'XMLTree::freeMemory()']]]
 ];

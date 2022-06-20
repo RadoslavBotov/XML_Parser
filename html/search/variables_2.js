@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['elements_0',['elements',['../struct_node.html#acda746e7c0b7602d28f6faac8cf5ab20',1,'Node']]]
+  ['id_0',['id',['../struct_key.html#a251e6cc6f890282dae07ffab87314d33',1,'Key::id()'],['../struct_node.html#a32cfa58c68050777fb9cb77ea5552f58',1,'Node::id()']]],
+  ['internalid_1',['internalId',['../class_x_m_l_tree.html#ae958512e47f3b3da6bc34fed4645df1a',1,'XMLTree']]]
 ];

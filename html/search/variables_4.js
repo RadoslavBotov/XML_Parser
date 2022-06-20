@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['key_0',['key',['../struct_node.html#a1afcb3b044a352038a4d4e480c075067',1,'Node']]]
+  ['listofnodes_0',['listOfNodes',['../class_x_m_l_tree.html#adbed315e326af2901ea9758ea60c2bd7',1,'XMLTree']]]
 ];
