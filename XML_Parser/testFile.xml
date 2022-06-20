@@ -1,5 +1,5 @@
-<people id="root_id">
-  <name>ALL_PEOPLE</name>
+<people id="3">
+  <name id="11">ALL_PEOPLE</name>
   <person id="1">
     <address>USA</address>
     <dog id="5">
@@ -8,8 +8,8 @@
       <gender>male</gender>
     </dog>
   </person>
-  <person id="">
-    <name>Greg Pauling</name>
+  <person id="blank_id">
+    <name id="12">Greg Pauling</name>
     <address>Austria</address>
   </person>
   <person id="3">

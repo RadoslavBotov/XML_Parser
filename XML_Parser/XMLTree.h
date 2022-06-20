@@ -21,6 +21,8 @@ private:
 	static std::vector <std::string> commandLines;
 	static size_t internalId;
 
+	void freeMemory();
+
 	short getIndexOfCommand(const char command[9]);
 	void getFileName(std::string& fileNameParam, const char* userInput, short commandSize) const;
 	void getXMLInfo(std::string& xmlInfo, const char* userInput, short commandSize) const;
@@ -37,5 +39,6 @@ private:
 	void child(std::string xmlInfo) const;
 	void text(std::string xmlInfo) const;
 	void deleteIdKey(std::string xmlInfo, bool& changesMade);
-	void newchild(std::string xmlInfo) const;
+	void newchild(std::string xmlInfo, bool& changesMade); // add new child to a node
+	void newattr(std::string xmlInfo, bool& changesMade); // add new attribute to a node <...>...</...>
 };

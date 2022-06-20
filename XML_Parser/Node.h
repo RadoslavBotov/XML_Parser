@@ -9,8 +9,8 @@ public:
 	//Node();
 	/// Constructor with parameters.
 	///
-	/// Parameters for key value and parent node pointer.
-	Node(std::string nameParam, const Node* parentParam);
+	/// Parameters for key value and parent node pointer and id with default value "".
+	Node(std::string nameParam, Node* parentParam, std::string idParam = "");
 	/// Copy constructor.
 	/// 
 	/// .
@@ -26,7 +26,7 @@ public:
 
 	void addNode(std::string nameParam);
 	void addNode(const Node& source);
-	void addElement(const std::string name, const std::string contents);
+	void addElement(const std::string name, const std::string value, const std::string id);
 
 	friend std::ostream& operator << (std::ostream& os, const Node& source);
 	friend std::istream& operator >> (std::istream& is, Node& source);
@@ -37,7 +37,7 @@ public:
 	std::vector <Node*> children;
 	std::vector <Key*> keys;
 
-	const Node* parent;
+	Node* parent;
 	unsigned depth;
 
 private: // internal functions
