@@ -287,6 +287,22 @@ void XMLTree::freeMemory()
 	listOfNodes.clear();
 }
 
+size_t XMLTree::to_size_t(std::string str) const
+{
+	size_t number = 0;
+	size_t i = 0;
+
+	while (str[i] != '\0') // go through string
+	{
+		if (str[i] >= '0' && str[i] <= '9') // if symbol at position i is a number
+			number = number * 10 + (str[i] - '0');	// add to number
+
+		i++;
+	}
+
+	return number;
+}
+
 short XMLTree::getIndexOfCommand(const char command[9])
 {
 	short br = 0;
@@ -555,11 +571,7 @@ void XMLTree::child(std::string xmlInfo) const // child <id> <n>
 		for (const Node* node : listOfNodes)
 			if (node->id == idParam)
 			{
-				size_t index = 0;
-				size_t i = 0;
-
-				while (n.size() > i)				// convert n to a size_t value so we can compare it
-					index = index * 10 + (n[i++] - '0');
+				size_t index = to_size_t(n); // convert n to a size_t value so we can compare it
 
 				if (node->children.size() > index)
 					std::cout << node->children[index]->name << " id='" << node->children[index]->id << "'" << std::endl << std::endl;
@@ -708,7 +720,7 @@ void XMLTree::newattr(std::string xmlInfo, bool& changesMade) // settext <id> <k
 			{
 				changesMade = true;
 
-				Key* newKey = new Key(keyParam, valueParam);
+				Key* newKey = new Key(keyParam, valueParam, std::to_string(internalId++));
 				node->keys.push_back(newKey);
 
 				std::cout << "> Successfully added attribute " << *newKey << " to '" << node->name << "'." << std::endl << std::endl;

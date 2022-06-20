@@ -22,6 +22,7 @@ private:
 	static size_t internalId;
 
 	void freeMemory();
+	size_t to_size_t(std::string str) const;
 
 	short getIndexOfCommand(const char command[9]);
 	void getFileName(std::string& fileNameParam, const char* userInput, short commandSize) const;
